@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demetra Samikou — Graphic Designer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Top Announcement Bar -->
+    <div class="announcement-bar">
+        <p>Available for freelance projects — <a href="#contact">Let's talk</a></p>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-overlay" id="navOverlay"></div>
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-name">Demetra</span>
+                <span class="logo-surname">Samikou</span>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li class="nav-close-wrapper"><button class="nav-close" id="navClose" aria-label="Close menu">&times;</button></li>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#contact" class="nav-cta">Get in Touch</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <p class="hero-subtitle">Graphic Designer & Visual Storyteller</p>
+            <h1 class="hero-title">Crafting brands<br>that <em>captivate</em></h1>
+            <p class="hero-description">I create thoughtful, elegant designs that help brands stand out and connect with their audience.</p>
+            <div class="hero-buttons">
+                <a href="#portfolio" class="btn btn-primary">View My Work</a>
+                <a href="#contact" class="btn btn-outline">Book a Call</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="hero-image-placeholder">
+                <svg viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="400" height="500" rx="20" fill="#EFD4C4"/>
+                    <circle cx="200" cy="180" r="60" fill="#E2B3C2"/>
+                    <rect x="100" y="270" width="200" height="12" rx="6" fill="#E2B3C2"/>
+                    <rect x="130" y="300" width="140" height="8" rx="4" fill="#d4a0b0"/>
+                    <path d="M160 380 L200 340 L240 380 L280 350 L320 400 L80 400 L120 360 Z" fill="#AC5B67" opacity="0.3"/>
+                </svg>
+                <p class="placeholder-text">Your Photo Here</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee / Trusted By -->
+    <div class="marquee-section">
+        <div class="marquee-track">
+            <div class="marquee-content">
+                <span>Brand Identity</span>
+                <span class="marquee-dot">✦</span>
+                <span>Logo Design</span>
+                <span class="marquee-dot">✦</span>
+                <span>Social Media</span>
+                <span class="marquee-dot">✦</span>
+                <span>Print Design</span>
+                <span class="marquee-dot">✦</span>
+                <span>Packaging</span>
+                <span class="marquee-dot">✦</span>
+                <span>Web Design</span>
+                <span class="marquee-dot">✦</span>
+            </div>
+            <div class="marquee-content" aria-hidden="true">
+                <span>Brand Identity</span>
+                <span class="marquee-dot">✦</span>
+                <span>Logo Design</span>
+                <span class="marquee-dot">✦</span>
+                <span>Social Media</span>
+                <span class="marquee-dot">✦</span>
+                <span>Print Design</span>
+                <span class="marquee-dot">✦</span>
+                <span>Packaging</span>
+                <span class="marquee-dot">✦</span>
+                <span>Web Design</span>
+                <span class="marquee-dot">✦</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image">
+                    <div class="about-image-placeholder">
+                        <svg viewBox="0 0 500 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="500" height="600" rx="16" fill="#F2E5C6"/>
+                            <circle cx="250" cy="230" r="80" fill="#E2B3C2"/>
+                            <rect x="150" y="350" width="200" height="10" rx="5" fill="#d4a0b0"/>
+                            <rect x="180" y="375" width="140" height="8" rx="4" fill="#d4a0b0" opacity="0.6"/>
+                        </svg>
+                        <p class="placeholder-text">About Photo</p>
+                    </div>
+                </div>
+                <div class="about-content">
+                    <span class="section-tag">About Me</span>
+                    <h2 class="section-title">Designing with purpose,<br>creating with passion</h2>
+                    <p>Hello! I'm Demetra, a graphic designer based in Greece with a deep love for clean aesthetics and meaningful design. I believe every brand has a unique story, and my job is to bring that story to life visually.</p>
+                    <p>With over 5 years of experience, I've had the pleasure of working with brands across fashion, beauty, hospitality, and lifestyle — helping them build identities that resonate and inspire.</p>
+                    <div class="about-stats">
+                        <div class="stat">
+                            <span class="stat-number">50+</span>
+                            <span class="stat-label">Projects Completed</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">30+</span>
+                            <span class="stat-label">Happy Clients</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">5+</span>
+                            <span class="stat-label">Years Experience</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="portfolio" id="portfolio">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Portfolio</span>
+                <h2 class="section-title">Selected Works</h2>
+                <p class="section-description">A curated collection of my recent design projects</p>
+            </div>
+
+            <!-- Portfolio Filter -->
+            <div class="portfolio-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="branding">Branding</button>
+                <button class="filter-btn" data-filter="print">Print</button>
+                <button class="filter-btn" data-filter="digital">Digital</button>
+                <button class="filter-btn" data-filter="packaging">Packaging</button>
+            </div>
+
+            <!-- Portfolio Grid -->
+            <div class="portfolio-grid">
+                <div class="portfolio-item" data-category="branding">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <svg viewBox="0 0 600 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="600" height="450" fill="#F2E5C6"/>
+                                <rect x="50" y="50" width="200" height="200" rx="100" fill="#E2B3C2"/>
+                                <rect x="300" y="80" width="250" height="16" rx="8" fill="#AC5B67" opacity="0.5"/>
+                                <rect x="300" y="120" width="180" height="12" rx="6" fill="#AC5B67" opacity="0.3"/>
+                                <rect x="300" y="150" width="220" height="12" rx="6" fill="#AC5B67" opacity="0.3"/>
+                                <rect x="50" y="300" width="500" height="100" rx="10" fill="#EFD4C4"/>
+                            </svg>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3>Brand Identity Project</h3>
+                            <p>Branding</p>
+                        </div>
+                        <div class="portfolio-overlay">
+                            <span>View Project →</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="digital">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <svg viewBox="0 0 600 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="600" height="450" fill="#781727" opacity="0.15"/>
+                                <rect x="40" y="40" width="520" height="300" rx="12" fill="#EFD4C4"/>
+                                <circle cx="300" cy="180" r="60" fill="#AC5B67" opacity="0.4"/>
+                                <rect x="100" y="370" width="150" height="40" rx="20" fill="#781727" opacity="0.3"/>
+                                <rect x="350" y="370" width="150" height="40" rx="20" fill="#781727" opacity="0.3"/>
+                            </svg>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3>Website Redesign</h3>
+                            <p>Digital</p>
+                        </div>
+                        <div class="portfolio-overlay">
+                            <span>View Project →</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="packaging">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <svg viewBox="0 0 600 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="600" height="450" fill="#EFD4C4"/>
+                                <rect x="150" y="50" width="300" height="350" rx="8" fill="#F2E5C6"/>
+                                <rect x="200" y="120" width="200" height="20" rx="10" fill="#781727" opacity="0.4"/>
+                                <rect x="220" y="160" width="160" height="10" rx="5" fill="#AC5B67" opacity="0.4"/>
+                                <circle cx="300" cy="270" r="50" fill="#E2B3C2"/>
+                            </svg>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3>Product Packaging</h3>
+                            <p>Packaging</p>
+                        </div>
+                        <div class="portfolio-overlay">
+                            <span>View Project →</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="print">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <svg viewBox="0 0 600 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="600" height="450" fill="#E2B3C2" opacity="0.3"/>
+                                <rect x="50" y="30" width="240" height="390" rx="8" fill="#F2E5C6"/>
+                                <rect x="310" y="30" width="240" height="390" rx="8" fill="#EFD4C4"/>
+                                <rect x="80" y="80" width="180" height="14" rx="7" fill="#781727" opacity="0.4"/>
+                                <rect x="80" y="110" width="140" height="10" rx="5" fill="#AC5B67" opacity="0.3"/>
+                                <rect x="340" y="80" width="180" height="14" rx="7" fill="#781727" opacity="0.4"/>
+                                <rect x="340" y="110" width="140" height="10" rx="5" fill="#AC5B67" opacity="0.3"/>
+                            </svg>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3>Editorial Layout</h3>
+                            <p>Print</p>
+                        </div>
+                        <div class="portfolio-overlay">
+                            <span>View Project →</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="branding">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <svg viewBox="0 0 600 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="600" height="450" fill="#F2E5C6"/>
+                                <circle cx="200" cy="225" r="120" fill="#E2B3C2" opacity="0.5"/>
+                                <circle cx="400" cy="225" r="120" fill="#AC5B67" opacity="0.2"/>
+                                <rect x="200" y="380" width="200" height="12" rx="6" fill="#781727" opacity="0.3"/>
+                            </svg>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3>Visual Identity System</h3>
+                            <p>Branding</p>
+                        </div>
+                        <div class="portfolio-overlay">
+                            <span>View Project →</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item" data-category="digital">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <svg viewBox="0 0 600 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="600" height="450" fill="#EFD4C4"/>
+                                <rect x="60" y="40" width="200" height="370" rx="24" fill="white"/>
+                                <rect x="90" y="80" width="140" height="20" rx="10" fill="#E2B3C2"/>
+                                <rect x="90" y="120" width="140" height="140" rx="8" fill="#F2E5C6"/>
+                                <rect x="340" y="40" width="200" height="370" rx="24" fill="white"/>
+                                <rect x="370" y="80" width="140" height="20" rx="10" fill="#AC5B67" opacity="0.4"/>
+                                <rect x="370" y="120" width="140" height="140" rx="8" fill="#F2E5C6"/>
+                            </svg>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3>Social Media Campaign</h3>
+                            <p>Digital</p>
+                        </div>
+                        <div class="portfolio-overlay">
+                            <span>View Project →</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portfolio-cta">
+                <a href="#contact" class="btn btn-primary">See All Projects</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Services</span>
+                <h2 class="section-title">What I Can Do For You</h2>
+                <p class="section-description">Tailored design solutions to elevate your brand</p>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="2"/>
+                            <path d="M24 14v20M14 24h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3>Brand Identity</h3>
+                    <p>Complete brand systems including logos, color palettes, typography, and brand guidelines that tell your unique story.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <rect x="6" y="10" width="36" height="28" rx="3" stroke="currentColor" stroke-width="2"/>
+                            <path d="M6 18h36" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="12" cy="14" r="1.5" fill="currentColor"/>
+                            <circle cx="17" cy="14" r="1.5" fill="currentColor"/>
+                            <circle cx="22" cy="14" r="1.5" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3>Web Design</h3>
+                    <p>Beautiful, user-friendly website designs that look stunning on every device and convert visitors into customers.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <rect x="8" y="6" width="32" height="36" rx="3" stroke="currentColor" stroke-width="2"/>
+                            <path d="M16 16h16M16 22h16M16 28h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3>Print Design</h3>
+                    <p>Business cards, brochures, posters, and editorial layouts crafted with precision and attention to detail.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <rect x="10" y="8" width="28" height="32" rx="4" stroke="currentColor" stroke-width="2"/>
+                            <path d="M18 8V6a2 2 0 012-2h8a2 2 0 012 2v2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M10 20h28" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3>Packaging Design</h3>
+                    <p>Eye-catching packaging that makes your products stand out on the shelf and creates memorable unboxing experiences.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <rect x="4" y="12" width="22" height="22" rx="3" stroke="currentColor" stroke-width="2"/>
+                            <rect x="22" y="14" width="22" height="22" rx="3" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="15" cy="23" r="5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3>Social Media Design</h3>
+                    <p>Scroll-stopping graphics and templates for Instagram, Facebook, and other platforms that grow your audience.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="service-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <path d="M24 4l6 12 13 2-9.5 9 2.5 13L24 34l-12 6 2.5-13L5 18l13-2z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Illustration</h3>
+                    <p>Custom illustrations and graphics that add personality and uniqueness to your brand's visual language.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">My Process</span>
+                <h2 class="section-title">How We'll Work Together</h2>
+            </div>
+
+            <div class="process-steps">
+                <div class="process-step">
+                    <span class="step-number">01</span>
+                    <h3>Discovery</h3>
+                    <p>We'll chat about your vision, goals, and brand personality to understand what makes you unique.</p>
+                </div>
+                <div class="process-connector"></div>
+                <div class="process-step">
+                    <span class="step-number">02</span>
+                    <h3>Concept</h3>
+                    <p>I'll create mood boards and initial concepts for you to review, ensuring we're aligned on direction.</p>
+                </div>
+                <div class="process-connector"></div>
+                <div class="process-step">
+                    <span class="step-number">03</span>
+                    <h3>Design</h3>
+                    <p>The magic happens — I'll craft your designs with care, incorporating your feedback along the way.</p>
+                </div>
+                <div class="process-connector"></div>
+                <div class="process-step">
+                    <span class="step-number">04</span>
+                    <h3>Deliver</h3>
+                    <p>You'll receive all final files, guidelines, and assets ready to use across all platforms.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Testimonials</span>
+                <h2 class="section-title">Kind Words from Clients</h2>
+            </div>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <blockquote>
+                        "Demetra completely transformed our brand. Her attention to detail and creative vision exceeded all our expectations. Working with her was an absolute pleasure!"
+                    </blockquote>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <span>MK</span>
+                        </div>
+                        <div>
+                            <strong>Maria K.</strong>
+                            <span>Boutique Owner</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <blockquote>
+                        "She has an incredible ability to understand exactly what you need, even when you can't articulate it yourself. The results speak for themselves — stunning work."
+                    </blockquote>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <span>NP</span>
+                        </div>
+                        <div>
+                            <strong>Nikos P.</strong>
+                            <span>Restaurant Owner</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <blockquote>
+                        "Professional, creative, and a joy to work with. Demetra designed our entire brand identity and we couldn't be happier with the outcome. Highly recommended!"
+                    </blockquote>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <span>EL</span>
+                        </div>
+                        <div>
+                            <strong>Elena L.</strong>
+                            <span>Startup Founder</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Bring Your Vision to Life?</h2>
+                <p>Let's create something beautiful together. I'd love to hear about your project.</p>
+                <a href="#contact" class="btn btn-primary btn-large">Start a Project</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <span class="section-tag">Contact</span>
+                    <h2 class="section-title">Let's Create<br>Something Together</h2>
+                    <p>Have a project in mind? I'd love to hear about it. Fill out the form or reach out directly — let's make your brand unforgettable.</p>
+
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                                <path d="M22 4L12 13 2 4"/>
+                            </svg>
+                            <span>hello@Demetrasamikou.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+                            </svg>
+                            <span>+30 123 456 7890</span>
+                        </div>
+                        <div class="contact-item">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            <span>Athens, Greece</span>
+                        </div>
+                    </div>
+
+                    <div class="social-links">
+                        <a href="#" aria-label="Instagram" class="social-link">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="2" width="20" height="20" rx="5"/>
+                                <circle cx="12" cy="12" r="5"/>
+                                <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Behance" class="social-link">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M7.5 11c1.38 0 2.5-1.12 2.5-2.5S8.88 6 7.5 6H3v5h4.5zm0 2H3v5h4.5c1.38 0 2.5-1.12 2.5-2.5S8.88 13 7.5 13zm9-5h5v-1.5h-5V8zm2.5 2c-2.49 0-4.5 2.01-4.5 4.5s2.01 4.5 4.5 4.5c1.52 0 2.87-.76 3.69-1.92l-1.53-1.03c-.47.66-1.24 1.1-2.16 1.1-1.38 0-2.5-1.02-2.5-2.65h6.75c.04-.24.06-.48.06-.75 0-2.07-1.69-3.75-4.31-3.75zm-2.3 3.5c.2-1.18 1.14-2 2.3-2 1.15 0 2.1.82 2.3 2h-4.6z"/>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Dribbble" class="social-link">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="LinkedIn" class="social-link">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="contact-form-wrapper">
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" placeholder="Jane Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="hello@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="service">Service Interested In</label>
+                            <select id="service" name="service">
+                                <option value="">Select a service...</option>
+                                <option value="branding">Brand Identity</option>
+                                <option value="web">Web Design</option>
+                                <option value="print">Print Design</option>
+                                <option value="packaging">Packaging Design</option>
+                                <option value="social">Social Media Design</option>
+                                <option value="illustration">Illustration</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Tell Me About Your Project</label>
+                            <textarea id="message" name="message" rows="5" placeholder="Describe your project, timeline, and any details you'd like to share..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <span class="logo-name">Demetra</span>
+                        <span class="logo-surname">Samikou</span>
+                    </a>
+                    <p>Graphic Designer & Visual Storyteller based in Athens, Greece. Creating brands that captivate and inspire.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#portfolio">Portfolio</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#services">Brand Identity</a></li>
+                        <li><a href="#services">Web Design</a></li>
+                        <li><a href="#services">Print Design</a></li>
+                        <li><a href="#services">Packaging</a></li>
+                        <li><a href="#services">Social Media</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Stay Updated</h4>
+                    <p>Subscribe for design tips and project updates.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email" required>
+                        <button type="submit" class="btn btn-primary">→</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Demetra Samikou. All rights reserved.</p>
+                <p>Website made by <a href="https://rusman.gr" target="_blank" rel="noopener noreferrer">Antonios Rusman</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
