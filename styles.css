@@ -137,20 +137,27 @@ ul {
 }
 
 .logo-name {
-    font-family: var(--font-heading);
-    font-size: 1.6rem;
-    font-weight: 600;
+    font-family: 'Berkshire Swash', cursive;
+    font-size: 1.5rem;
+    font-weight: 400;
     color: var(--antique-ruby);
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
 }
 
-.logo-surname {
-    font-family: var(--font-body);
-    font-size: 0.65rem;
-    font-weight: 500;
-    letter-spacing: 3px;
-    text-transform: uppercase;
+.logo-d {
+    font-family: 'Berkshire Swash', cursive;
+    font-size: 1.35em;
+    line-height: 1;
+    margin-right: -0.03em;
+}
+
+.logo-subtitle {
+    font-family: 'Great Vibes', cursive;
+    font-size: 0.95rem;
+    font-weight: 400;
     color: var(--deep-puce);
+    letter-spacing: 0.5px;
+    margin-top: 1px;
 }
 
 .nav-links {
@@ -987,7 +994,9 @@ ul {
     color: var(--champagne);
 }
 
-.footer-brand .logo-surname {
+
+
+.footer-brand .logo-subtitle {
     color: var(--pink-pearl);
 }
 
