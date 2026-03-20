@@ -47,36 +47,99 @@ document.addEventListener('DOMContentLoaded', () => {
         link.addEventListener('click', closeNav);
     });
 
-    // ---- Portfolio Filtering ----
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const portfolioItems = document.querySelectorAll('.portfolio-item');
-    const portfolioGrid = document.querySelector('.portfolio-grid');
+    // ---- Load Site Images (hero + about) from API ----
+    async function loadSiteImages() {
+        try {
+            const res = await fetch('/api/projects/site/settings');
+            const data = await res.json();
 
-    filterButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Update active button
-            filterButtons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            const filter = btn.dataset.filter;
-
-            portfolioItems.forEach(item => {
-                const matches = filter === 'all' || item.dataset.category === filter;
-                if (matches) {
-                    item.classList.remove('hidden');
-                    item.style.display = '';
-                } else {
-                    item.classList.add('hidden');
-                    // Wait for fade out then hide
-                    setTimeout(() => {
-                        if (item.classList.contains('hidden')) {
-                            item.style.display = 'none';
-                        }
-                    }, 400);
+            if (data.heroImage && data.heroImage.url) {
+                const heroWrap = document.getElementById('heroImageWrap');
+                if (heroWrap) {
+                    heroWrap.innerHTML = '<img src="' + data.heroImage.url + '" alt="Demetra Samikou" style="width:100%;height:100%;object-fit:cover;border-radius:20px;">';
                 }
-            });
+            }
+
+            if (data.aboutImage && data.aboutImage.url) {
+                const aboutWrap = document.getElementById('aboutImageWrap');
+                if (aboutWrap) {
+                    aboutWrap.innerHTML = '<img src="' + data.aboutImage.url + '" alt="About Demetra" style="width:100%;height:100%;object-fit:cover;border-radius:16px;">';
+                }
+            }
+        } catch {}
+    }
+
+    loadSiteImages();
+
+    // ---- Load Portfolio Folders from API ----
+    let featuredFolders = [];
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        const d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+    }
+
+    async function loadFoldersAndPortfolio() {
+        const grid = document.getElementById('portfolioGrid');
+        if (!grid) return;
+
+        try {
+            const res = await fetch('/api/projects/folders/featured');
+            const data = await res.json();
+            featuredFolders = Array.isArray(data) ? data : [];
+
+            const filtersContainer = document.getElementById('portfolioFilters');
+            if (filtersContainer) {
+                filtersContainer.innerHTML = '<button class="filter-btn active" data-filter="all">All Folders</button>';
+            }
+
+            renderFolderItems(featuredFolders);
+            initPortfolioAnimations();
+        } catch {
+            if (grid) grid.innerHTML = '<p style="text-align:center;color:var(--text-light);grid-column:1/-1;padding:40px;">Failed to load folders.</p>';
+        }
+    }
+
+    function renderFolderItems(folders) {
+        const grid = document.getElementById('portfolioGrid');
+        if (!grid) return;
+
+        if (folders.length === 0) {
+            grid.innerHTML = '<p style="text-align:center;color:var(--text-light);grid-column:1/-1;padding:40px;">No folders selected yet.</p>';
+            return;
+        }
+
+        grid.innerHTML = folders.map(folder => `
+            <div class="portfolio-item">
+                <a href="/projects?folder=${encodeURIComponent(folder._id)}" style="text-decoration:none;color:inherit;display:flex;height:100%">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <img src="${escapeHtml(folder.image)}" alt="${escapeHtml(folder.name)}" loading="lazy">
+                        </div>
+                        <div class="portfolio-info">
+                            <h3>${escapeHtml(folder.name)}</h3>
+                            <p>${escapeHtml(String(folder.projectCount || 0))} project(s)</p>
+                        </div>
+                        <div class="portfolio-overlay">
+                            <span>View Folder →</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        `).join('');
+    }
+
+    function initPortfolioAnimations() {
+        document.querySelectorAll('.portfolio-item').forEach((el, index) => {
+            el.classList.add('fade-in');
+            el.style.transitionDelay = `${index * 0.1}s`;
+            observer.observe(el);
         });
-    });
+    }
+
+    loadFoldersAndPortfolio();
 
     // ---- Scroll Reveal Animations ----
     const observerOptions = {
@@ -99,7 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
         '.hero-image',
         '.about-image',
         '.about-content',
-        '.portfolio-item',
         '.service-card',
         '.process-step',
         '.testimonial-card',

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Projects — Demetra Samikou</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .projects-page-hero {
+            padding: 40px 0 40px;
+            text-align: center;
+            background: var(--off-white);
+        }
+        .projects-page-hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+        .projects-page-hero p {
+            font-size: 1rem;
+            color: var(--text-medium);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .projects-page-filters {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 24px 32px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .projects-page-filters .filter-btn {
+            padding: 8px 20px;
+            border: 1px solid var(--almond);
+            background: white;
+            color: var(--text-medium);
+            border-radius: 24px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .projects-page-filters .filter-btn:hover {
+            border-color: var(--antique-ruby);
+            color: var(--antique-ruby);
+        }
+        .projects-page-filters .filter-btn.active {
+            background: var(--antique-ruby);
+            color: white;
+            border-color: var(--antique-ruby);
+        }
+
+        .projects-page-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 32px 48px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        .project-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .project-card-item {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 16px rgba(120,23,39,0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .project-card-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(120,23,39,0.12);
+        }
+        .project-card-thumb {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            display: block;
+        }
+        .project-card-body {
+            padding: 20px;
+        }
+        .project-card-body h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+        .project-card-body .card-category {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--deep-puce);
+            margin-bottom: 8px;
+        }
+        .project-card-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .project-card-tags span {
+            padding: 2px 10px;
+            background: var(--champagne);
+            border-radius: 12px;
+            font-size: 0.68rem;
+            color: var(--text-medium);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .load-more-section {
+            text-align: center;
+            padding: 24px 32px 60px;
+        }
+        .load-more-section button {
+            padding: 14px 40px;
+            border-radius: 30px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 0 8px;
+        }
+        .btn-show-more {
+            background: var(--antique-ruby);
+            color: white;
+            border: none;
+        }
+        .btn-show-more:hover { background: var(--dark-maroon); }
+        .btn-show-less {
+            background: transparent;
+            color: var(--antique-ruby);
+            border: 1px solid var(--antique-ruby);
+        }
+        .btn-show-less:hover { background: var(--antique-ruby); color: white; }
+        .btn-show-more:disabled, .btn-show-less:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .projects-loading {
+            text-align: center;
+            padding: 60px 32px;
+            color: var(--text-light);
+        }
+        .projects-empty {
+            text-align: center;
+            padding: 80px 32px;
+            color: var(--text-light);
+        }
+        .projects-empty h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            color: var(--text-medium);
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 1024px) {
+            .projects-page-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .projects-page-hero h1 { font-size: 2.2rem; }
+            .projects-page-grid { grid-template-columns: 1fr; padding: 16px 16px 48px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="nav-overlay" id="navOverlay"></div>
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <img src="/Logo.png" alt="Demetra Samikou - Graphic Designer" class="logo-img">
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li class="nav-close-wrapper"><button class="nav-close" id="navClose" aria-label="Close menu">&times;</button></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/#about">About</a></li>
+                <li><a href="/#portfolio">Portfolio</a></li>
+                <li><a href="/projects" style="color:var(--antique-ruby);">All Projects</a></li>
+                <li><a href="/#services">Services</a></li>
+                <li><a href="/#contact" class="nav-cta">Get in Touch</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="projects-page-hero">
+        <h1 id="pageTitle">All Projects</h1>
+        <p id="pageSubtitle">Explore my complete portfolio of design work</p>
+    </section>
+
+    <div class="projects-page-filters" id="filtersContainer">
+        <button class="filter-btn active" data-category="all">All</button>
+    </div>
+
+    <div class="projects-page-grid" id="projectsGrid">
+        <div class="projects-loading">Loading projects...</div>
+    </div>
+
+    <div class="load-more-section" id="loadMoreSection" style="display:none;">
+        <button class="btn-show-more" id="btnShowMore">Show More</button>
+        <button class="btn-show-less" id="btnShowLess" style="display:none;">Show Less</button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="logo">
+                        <span class="logo-name"><span class="logo-d">D</span>emetra Samikou</span>
+                        <span class="logo-subtitle">Graphic Designer</span>
+                    </a>
+                    <p>Graphic Designer & Visual Storyteller based in Athens, Greece. Creating brands that captivate and inspire.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/#about">About</a></li>
+                        <li><a href="/#portfolio">Portfolio</a></li>
+                        <li><a href="/#services">Services</a></li>
+                        <li><a href="/#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="/#services">Brand Identity</a></li>
+                        <li><a href="/#services">Web Design</a></li>
+                        <li><a href="/#services">Print Design</a></li>
+                        <li><a href="/#services">Packaging</a></li>
+                        <li><a href="/#services">Social Media</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Stay Updated</h4>
+                    <p>Subscribe for design tips and project updates.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email" required>
+                        <button type="submit" class="btn btn-primary">→</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Demetra Samikou. All rights reserved.</p>
+                <p>Website made by <a href="https://rusman.gr" target="_blank" rel="noopener noreferrer">Antonios Rusman</a></p>
+                <a href="/login" class="admin-login-link" title="Admin Login">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    (function() {
+        // Nav toggle
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+        const navOverlay = document.getElementById('navOverlay');
+        const navbar = document.getElementById('navbar');
+
+        function closeNav() {
+            navToggle.classList.remove('active'); navLinks.classList.remove('active');
+            navOverlay.classList.remove('active'); document.body.classList.remove('nav-open');
+        }
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.contains('active') ? closeNav() : (() => {
+                navToggle.classList.add('active'); navLinks.classList.add('active');
+                navOverlay.classList.add('active'); document.body.classList.add('nav-open');
+            })();
+        });
+        navOverlay.addEventListener('click', closeNav);
+        const navClose = document.getElementById('navClose');
+        if (navClose) navClose.addEventListener('click', closeNav);
+        navLinks.querySelectorAll('a').forEach(l => l.addEventListener('click', closeNav));
+        window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 50));
+
+        // State
+        const PER_PAGE = 30;
+        let currentPage = 1;
+        let currentCategory = 'all';
+        const initialFolder = new URLSearchParams(window.location.search).get('folder') || 'all';
+        let currentFolder = initialFolder;
+        let allLoaded = [];
+        let totalProjects = 0;
+        let hasMore = false;
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            const d = document.createElement('div'); d.textContent = str; return d.innerHTML;
+        }
+
+        // Load folder name if viewing a specific folder
+        async function loadFolderInfo() {
+            if (currentFolder === 'all') return;
+            try {
+                const res = await fetch('/api/projects/folders');
+                const folders = await res.json();
+                const folder = folders.find(f => f._id === currentFolder);
+                if (folder) {
+                    document.getElementById('pageTitle').textContent = folder.name;
+                    document.getElementById('pageSubtitle').textContent = 'Browse projects in this folder';
+                    document.title = folder.name + ' — Demetra Samikou';
+                }
+            } catch {}
+        }
+
+        // Load categories for filter buttons (filtered by folder if set)
+        async function loadCategories() {
+            try {
+                let url = '/api/projects/categories/list';
+                if (currentFolder !== 'all') url += '?folder=' + encodeURIComponent(currentFolder);
+                const res = await fetch(url);
+                const categories = await res.json();
+                const container = document.getElementById('filtersContainer');
+                // Only show "All" button if there are multiple categories
+                if (categories.length <= 1) {
+                    container.style.display = 'none';
+                    return;
+                }
+                categories.forEach(cat => {
+                    const btn = document.createElement('button');
+                    btn.className = 'filter-btn';
+                    btn.dataset.category = cat;
+                    btn.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+                    btn.addEventListener('click', () => filterByCategory(cat));
+                    container.appendChild(btn);
+                });
+            } catch {}
+        }
+
+        // Filter
+        function filterByCategory(cat) {
+            currentCategory = cat;
+            currentPage = 1;
+            allLoaded = [];
+            document.querySelectorAll('.projects-page-filters .filter-btn').forEach(b => b.classList.remove('active'));
+            const btn = document.querySelector(`.filter-btn[data-category="${cat}"]`);
+            if (btn) btn.classList.add('active');
+            loadProjects();
+        }
+
+        // Attach filter to "All" button
+        document.querySelector('.filter-btn[data-category="all"]').addEventListener('click', () => filterByCategory('all'));
+
+        // Load projects
+        async function loadProjects() {
+            const grid = document.getElementById('projectsGrid');
+            if (currentPage === 1) grid.innerHTML = '<div class="projects-loading">Loading projects...</div>';
+
+            try {
+                let url = '/api/projects?page=' + currentPage + '&limit=' + PER_PAGE;
+                if (currentCategory !== 'all') url += '&category=' + encodeURIComponent(currentCategory);
+                if (currentFolder !== 'all') url += '&folder=' + encodeURIComponent(currentFolder);
+
+                const res = await fetch(url);
+                const data = await res.json();
+
+                allLoaded = allLoaded.concat(data.projects);
+                totalProjects = data.total;
+                hasMore = data.hasMore;
+
+                renderProjects();
+                updateLoadButtons();
+            } catch {
+                grid.innerHTML = '<div class="projects-empty"><h2>Failed to load projects</h2><p>Please try again later.</p></div>';
+            }
+        }
+
+        function renderProjects() {
+            const grid = document.getElementById('projectsGrid');
+            if (allLoaded.length === 0) {
+                grid.innerHTML = '<div class="projects-empty"><h2>No projects yet</h2><p>Check back soon for new work.</p></div>';
+                return;
+            }
+
+            grid.innerHTML = allLoaded.map(p => {
+                const tagsHtml = (p.tags || []).map(t => '<span>' + escapeHtml(t) + '</span>').join('');
+                return `<a href="/project/${encodeURIComponent(p.slug)}" class="project-card-link">
+                    <div class="project-card-item">
+                        <img class="project-card-thumb" src="${escapeHtml(p.thumbnail.url)}" alt="${escapeHtml(p.title)}" loading="lazy">
+                        <div class="project-card-body">
+                            <div class="card-category">${escapeHtml(p.category)}</div>
+                            <h3>${escapeHtml(p.title)}</h3>
+                            ${tagsHtml ? '<div class="project-card-tags">' + tagsHtml + '</div>' : ''}
+                        </div>
+                    </div>
+                </a>`;
+            }).join('');
+        }
+
+        function updateLoadButtons() {
+            const section = document.getElementById('loadMoreSection');
+            const showMoreBtn = document.getElementById('btnShowMore');
+            const showLessBtn = document.getElementById('btnShowLess');
+
+            if (totalProjects <= PER_PAGE && currentPage === 1) {
+                section.style.display = 'none';
+                return;
+            }
+
+            section.style.display = 'block';
+            showMoreBtn.style.display = hasMore ? 'inline-block' : 'none';
+            showLessBtn.style.display = currentPage > 1 ? 'inline-block' : 'none';
+        }
+
+        // Show More
+        document.getElementById('btnShowMore').addEventListener('click', () => {
+            currentPage++;
+            loadProjects();
+        });
+
+        // Show Less — go back to first page
+        document.getElementById('btnShowLess').addEventListener('click', () => {
+            currentPage = 1;
+            allLoaded = [];
+            loadProjects();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Init
+        loadFolderInfo();
+        loadCategories();
+        loadProjects();
+    })();
+    </script>
+</body>
+</html>

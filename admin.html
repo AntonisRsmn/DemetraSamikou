@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel — Demetra Samikou</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --champagne: #F2E5C6; --almond: #EFD4C4; --pink-pearl: #E2B3C2;
+            --deep-puce: #AC5B67; --antique-ruby: #781727; --dark-maroon: #560B18;
+            --deep-wine: #3B010B; --off-white: #FDF8F4; --text-dark: #2D1A1A;
+            --text-medium: #5C3A3A; --text-light: #8C6B6B;
+        }
+
+        body { font-family: 'Montserrat', sans-serif; background: var(--off-white); color: var(--text-dark); min-height: 100vh; }
+
+        .admin-nav { background: white; border-bottom: 1px solid var(--almond); padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 64px; position: sticky; top: 0; z-index: 100; }
+        .admin-nav-left { display: flex; align-items: center; gap: 16px; }
+        .admin-nav-left img { height: 40px; }
+        .admin-nav-left span { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 600; color: var(--antique-ruby); }
+        .admin-nav-right { display: flex; align-items: center; gap: 20px; }
+        .admin-user { font-size: 0.82rem; color: var(--text-medium); }
+        .logout-btn, .btn-primary { padding: 8px 20px; background: var(--antique-ruby); color: white; border: none; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: background-color 0.3s; }
+        .logout-btn:hover, .btn-primary:hover { background: var(--dark-maroon); }
+        .btn-secondary { padding: 8px 20px; background: transparent; color: var(--antique-ruby); border: 1px solid var(--antique-ruby); border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.3s; }
+        .btn-secondary:hover { background: var(--antique-ruby); color: white; }
+        .btn-danger { padding: 6px 14px; background: #dc3545; color: white; border: none; border-radius: 6px; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; cursor: pointer; }
+        .btn-danger:hover { background: #a71d2a; }
+        .btn-sm { padding: 6px 12px; font-size: 0.75rem; }
+
+        .admin-main { max-width: 1100px; margin: 32px auto; padding: 0 32px; }
+
+        /* Tabs */
+        .admin-tabs { display: flex; gap: 0; border-bottom: 2px solid var(--almond); margin-bottom: 32px; }
+        .admin-tab { padding: 12px 24px; background: none; border: none; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 500; color: var(--text-light); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.3s; }
+        .admin-tab:hover { color: var(--antique-ruby); }
+        .admin-tab.active { color: var(--antique-ruby); border-bottom-color: var(--antique-ruby); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Cards */
+        .card { background: white; border-radius: 12px; padding: 28px; box-shadow: 0 2px 12px rgba(120,23,39,0.06); margin-bottom: 24px; border: 1px solid #f7ece6; }
+        .card h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 600; margin-bottom: 16px; color: var(--text-dark); }
+        .section-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .section-note { font-size: 0.82rem; color: var(--text-light); margin-top: 12px; }
+
+        /* Forms */
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 500; color: var(--text-medium); margin-bottom: 6px; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 14px; border: 1px solid var(--almond); border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 0.85rem; color: var(--text-dark); background: var(--off-white); outline: none; transition: border-color 0.3s; }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--antique-ruby); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        /* Image upload zones */
+        .upload-zone { border: 2px dashed var(--almond); border-radius: 12px; padding: 32px; text-align: center; cursor: pointer; transition: all 0.3s; position: relative; }
+        .upload-zone:hover { border-color: var(--antique-ruby); background: rgba(120,23,39,0.02); }
+        .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+        .upload-zone p { font-size: 0.82rem; color: var(--text-light); margin-top: 8px; }
+        .upload-zone .icon { font-size: 2rem; color: var(--deep-puce); }
+        .preview-img { max-width: 200px; max-height: 150px; border-radius: 8px; margin-top: 12px; object-fit: cover; }
+
+        /* Project list table */
+        .project-table { width: 100%; border-collapse: collapse; }
+            #projectsList { width: 100%; overflow-x: auto; }
+        .project-table th { text-align: left; padding: 10px 12px; font-size: 0.75rem; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--almond); background: #fffaf7; }
+        .project-table td { padding: 12px; font-size: 0.85rem; border-bottom: 1px solid #f5ece5; vertical-align: middle; }
+        .project-table tr:hover td { background: rgba(242,229,198,0.3); }
+        .project-thumb { width: 60px; height: 45px; object-fit: cover; border-radius: 6px; }
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 500; text-transform: uppercase; }
+        .badge-published { background: #d4edda; color: #155724; }
+        .badge-draft { background: #fff3cd; color: #856404; }
+        .actions-cell { display: flex; gap: 6px; flex-wrap: wrap; }
+        .folder-visibility { display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-medium); }
+        .folder-visibility input { accent-color: var(--antique-ruby); width: 16px; height: 16px; cursor: pointer; }
+
+        /* Gallery grid */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px; margin-top: 12px; }
+        .gallery-item { position: relative; border-radius: 8px; overflow: hidden; }
+        .gallery-item img { width: 100%; height: 100px; object-fit: cover; display: block; }
+        .gallery-item .remove-img { position: absolute; top: 4px; right: 4px; width: 24px; height: 24px; background: rgba(220,53,69,0.9); color: white; border: none; border-radius: 50%; cursor: pointer; font-size: 14px; line-height: 24px; text-align: center; }
+
+        /* Status message */
+        .status-msg { padding: 12px 16px; border-radius: 8px; font-size: 0.82rem; margin-bottom: 16px; display: none; }
+        .status-msg.success { display: block; background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .status-msg.error { display: block; background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+
+        .empty-state { text-align: center; padding: 48px 24px; color: var(--text-light); }
+        .empty-state p { font-size: 0.9rem; margin-bottom: 16px; }
+
+        /* Modal */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: center; justify-content: center; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: white; border-radius: 16px; padding: 32px; max-width: 600px; width: 90%; max-height: 85vh; overflow-y: auto; }
+        .modal h2 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; margin-bottom: 20px; }
+        .modal-actions { display: flex; gap: 12px; margin-top: 20px; justify-content: flex-end; }
+
+        /* Dialog modal */
+        #dialogModal { backdrop-filter: blur(2px); }
+        #dialogModal .modal {
+            max-width: 420px;
+            text-align: center;
+            border: 1px solid var(--almond);
+            box-shadow: 0 8px 32px rgba(120,23,39,0.16);
+            animation: dialogIn 0.18s ease-out;
+        }
+        #dialogModal .btn-primary { background: var(--antique-ruby); color: #fff; }
+        #dialogModal .btn-primary:hover { background: var(--dark-maroon); }
+        #dialogModal .btn-secondary { border: 1px solid var(--antique-ruby); color: var(--antique-ruby); background: #fff; }
+        #dialogModal .btn-secondary:hover { background: var(--antique-ruby); color: #fff; }
+        .dialog-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--almond);
+            border-radius: 8px;
+            margin-top: 8px;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-dark);
+            outline: none;
+        }
+        .dialog-input:focus { border-color: var(--antique-ruby); }
+
+        @keyframes dialogIn {
+            from { opacity: 0; transform: translateY(6px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Image settings row */
+        .settings-image-row { display: flex; align-items: center; gap: 24px; margin-bottom: 24px; }
+        .settings-image-row .current-img { width: 200px; height: 150px; object-fit: cover; border-radius: 12px; border: 1px solid var(--almond); }
+        .settings-image-row .placeholder-box { width: 200px; height: 150px; background: var(--almond); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--text-light); font-size: 0.8rem; }
+
+        @media (max-width: 768px) {
+            .admin-nav { padding: 0 8px; height: 56px; }
+            .admin-main { padding: 0 4px; margin: 12px auto; }
+            .admin-nav-left span { display: none; }
+            .form-row { grid-template-columns: 1fr; }
+            .admin-tabs { overflow-x: auto; }
+            .project-table { font-size: 0.78rem; min-width: 600px; }
+            .card { padding: 14px; }
+            .modal { padding: 12px; max-width: 98vw; }
+            .modal h2 { font-size: 1.1rem; }
+            .modal-actions { flex-direction: column; gap: 8px; align-items: stretch; }
+            .modal-actions .btn-primary, .modal-actions .btn-secondary { width: 100%; min-width: 0; box-sizing: border-box; }
+            .actions-cell .btn-secondary, .actions-cell .btn-danger { width: auto; }
+            .project-table th, .project-table td { padding: 8px 6px; }
+            #projectsList { overflow-x: auto; }
+            #foldersList { overflow-x: auto; }
+            .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
+            .gallery-item img { height: 60px; }
+            .settings-image-row { flex-direction: column; gap: 10px; }
+            .settings-image-row .current-img, .settings-image-row .placeholder-box { width: 100%; height: 120px; }
+            .preview-img { max-width: 90px; max-height: 60px; }
+            .upload-zone { padding: 16px; }
+            .admin-nav-right { gap: 8px; }
+            .logout-btn { padding: 8px 10px; font-size: 0.8rem; }
+            .admin-user { font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+        <!-- Custom Dialog Modal -->
+        <div class="modal-overlay" id="dialogModal" aria-hidden="true">
+            <div class="modal" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
+                <h2 id="dialogTitle" style="font-size:1.1rem;margin-bottom:12px;">Dialog</h2>
+                <div id="dialogMessage" style="margin-bottom:12px;font-size:0.98rem;color:var(--text-medium);">Message</div>
+                <input id="dialogInput" class="dialog-input" type="text" style="display:none;" />
+                <div class="modal-actions" style="justify-content:center;gap:16px;">
+                    <button class="btn-primary" id="dialogPrimaryBtn">OK</button>
+                    <button class="btn-secondary" id="dialogCancelBtn">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+    <nav class="admin-nav">
+        <div class="admin-nav-left">
+            <img src="/Logo.png" alt="Demetra Samikou">
+            <span>Admin Panel</span>
+        </div>
+        <div class="admin-nav-right">
+            <button class="logout-btn" id="logoutBtn">Logout</button>
+        </div>
+    </nav>
+
+    <main class="admin-main">
+        <div class="admin-tabs">
+            <button class="admin-tab active" data-tab="projects">Projects</button>
+            <button class="admin-tab" data-tab="folders">Folders</button>
+            <button class="admin-tab" data-tab="settings">Site Images</button>
+        </div>
+
+        <div id="statusMsg" class="status-msg"></div>
+
+        <!-- ==================== PROJECTS TAB ==================== -->
+        <div class="tab-content active" id="tab-projects">
+            <div class="card">
+                <div class="section-head">
+                    <h2>Portfolio Projects</h2>
+                    <button class="btn-primary" id="btnNewProject">+ New Project</button>
+                </div>
+                <div id="projectsList"></div>
+            </div>
+        </div>
+
+        <!-- ==================== FOLDERS TAB ==================== -->
+        <div class="tab-content" id="tab-folders">
+            <div class="card">
+                <div class="section-head">
+                    <h2>Folders</h2>
+                    <button class="btn-primary" id="btnNewFolder">+ New Folder</button>
+                </div>
+                <div id="foldersList"></div>
+                <p class="section-note">Create as many folders as you need. Use "Show on site" to control which folders appear on the website.</p>
+            </div>
+        </div>
+
+        <!-- ==================== SETTINGS TAB ==================== -->
+        <div class="tab-content" id="tab-settings">
+            <!-- Hero Image -->
+            <div class="card">
+                <h2>Hero Image</h2>
+                <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:16px;">The main photo displayed in the hero section of the homepage.</p>
+                <div class="settings-image-row">
+                    <div id="heroPreviewWrap">
+                        <div class="placeholder-box" id="heroPlaceholder">No image set</div>
+                    </div>
+                    <div>
+                        <div class="upload-zone" style="padding:20px;">
+                            <input type="file" accept="image/*" id="heroFileInput">
+                            <div class="icon">📷</div>
+                            <p>Click or drag to upload</p>
+                        </div>
+                        <button class="btn-primary btn-sm" style="margin-top:10px;" id="btnUploadHero">Upload Hero Image</button>
+                    </div>
+                </div>
+            </div>
+            <!-- About Image -->
+            <div class="card">
+                <h2>About Image</h2>
+                <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:16px;">The photo displayed in the "About Me" section.</p>
+                <div class="settings-image-row">
+                    <div id="aboutPreviewWrap">
+                        <div class="placeholder-box" id="aboutPlaceholder">No image set</div>
+                    </div>
+                    <div>
+                        <div class="upload-zone" style="padding:20px;">
+                            <input type="file" accept="image/*" id="aboutFileInput">
+                            <div class="icon">📷</div>
+                            <p>Click or drag to upload</p>
+                        </div>
+                        <button class="btn-primary btn-sm" style="margin-top:10px;" id="btnUploadAbout">Upload About Image</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ==================== PROJECT MODAL ==================== -->
+    <div class="modal-overlay" id="projectModal">
+        <div class="modal">
+            <h2 id="modalTitle">New Project</h2>
+            <form id="projectForm">
+                <input type="hidden" id="projectId">
+                <div class="form-group">
+                    <label for="projTitle">Title *</label>
+                    <input type="text" id="projTitle" required maxlength="200">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="projCategory">Category *</label>
+                        <input type="text" id="projCategory" required maxlength="50" placeholder="e.g. branding, digital, print">
+                    </div>
+                    <div class="form-group">
+                        <label for="projFolder">Folder</label>
+                        <select id="projFolder">
+                            <option value="">None</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="projYear">Year</label>
+                        <input type="text" id="projYear" maxlength="10" placeholder="e.g. 2024">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="projClient">Client</label>
+                    <input type="text" id="projClient" maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label for="projTags">Tags (comma separated)</label>
+                    <input type="text" id="projTags" placeholder="logo, branding, identity">
+                </div>
+                <div class="form-group">
+                    <label for="projDescription">Description</label>
+                    <textarea id="projDescription" rows="4" maxlength="5000"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Thumbnail *</label>
+                    <div class="upload-zone" id="thumbZone">
+                        <input type="file" accept="image/*" id="projThumbnail">
+                        <div class="icon">🖼️</div>
+                        <p>Click or drag to upload thumbnail</p>
+                    </div>
+                    <img class="preview-img" id="thumbPreview" style="display:none;">
+                </div>
+                <div class="form-group">
+                    <label>Gallery Images <span style="font-weight:400;color:var(--text-light);">(optional, up to 20)</span></label>
+                    <div class="upload-zone" id="galleryZone">
+                        <input type="file" accept="image/*" id="projGallery" multiple>
+                        <div class="icon">📁</div>
+                        <p>Click or drag to upload multiple images</p>
+                    </div>
+                    <div id="galleryPreviewRow" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;"></div>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="projPublished" checked> Published
+                    </label>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="btnCancelProject">Cancel</button>
+                    <button type="submit" class="btn-primary" id="btnSaveProject">Save Project</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== GALLERY MODAL ==================== -->
+    <div class="modal-overlay" id="galleryModal">
+        <div class="modal">
+            <h2>Project Gallery — <span id="galleryProjectName"></span></h2>
+            <div class="gallery-grid" id="galleryGrid"></div>
+            <div style="margin-top:20px;">
+                <div class="upload-zone" style="padding:16px;">
+                    <input type="file" accept="image/*" id="galleryFileInput" multiple>
+                    <div class="icon">📁</div>
+                    <p>Click or drag to upload images (up to 10)</p>
+                </div>
+                <button class="btn-primary btn-sm" style="margin-top:10px;" id="btnUploadGallery">Upload Images</button>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="btnCloseGallery">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Custom Dialog Modal logic
+    window.showDialog = function({ title = 'Dialog', message = '', input = false, inputValue = '', inputPlaceholder = '', primaryText = 'OK', cancelText = 'Cancel', showCancel = true }) {
+        return new Promise((resolve) => {
+            const modal = document.getElementById('dialogModal');
+            const titleEl = document.getElementById('dialogTitle');
+            const msgEl = document.getElementById('dialogMessage');
+            const inputEl = document.getElementById('dialogInput');
+            const primaryBtn = document.getElementById('dialogPrimaryBtn');
+            const cancelBtn = document.getElementById('dialogCancelBtn');
+
+            titleEl.textContent = title;
+            msgEl.textContent = message;
+            if (input) {
+                inputEl.style.display = 'block';
+                inputEl.value = inputValue;
+                inputEl.placeholder = inputPlaceholder;
+                setTimeout(() => inputEl.focus(), 0);
+            } else {
+                inputEl.style.display = 'none';
+            }
+
+            primaryBtn.textContent = primaryText;
+            cancelBtn.textContent = cancelText;
+            cancelBtn.style.display = showCancel ? '' : 'none';
+            modal.classList.add('active');
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+
+            function cleanup() {
+                modal.classList.remove('active');
+                modal.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+                primaryBtn.removeEventListener('click', onOk);
+                cancelBtn.removeEventListener('click', onCancel);
+                modal.removeEventListener('click', onOverlay);
+                document.removeEventListener('keydown', onKeyDown);
+            }
+
+            function onOk() {
+                const value = input ? inputEl.value.trim() : true;
+                cleanup();
+                resolve(value);
+            }
+
+            function onCancel() {
+                cleanup();
+                resolve(null);
+            }
+
+            function onOverlay(e) {
+                if (e.target === modal) {
+                    onCancel();
+                }
+            }
+
+            function onKeyDown(e) {
+                if (e.key === 'Escape') onCancel();
+                if (e.key === 'Enter' && (input || document.activeElement === inputEl || document.activeElement === primaryBtn)) onOk();
+            }
+
+            primaryBtn.addEventListener('click', onOk);
+            cancelBtn.addEventListener('click', onCancel);
+            modal.addEventListener('click', onOverlay);
+            document.addEventListener('keydown', onKeyDown);
+        });
+    };
+
+    window.showAlert = function(message) {
+        return window.showDialog({ title: 'Notice', message, input: false, primaryText: 'OK', showCancel: false });
+    };
+
+    window.showConfirm = function(message) {
+        return window.showDialog({ title: 'Please Confirm', message, input: false, primaryText: 'Yes', cancelText: 'No' });
+    };
+
+    window.showPrompt = function(title, message, defaultValue = '') {
+        return window.showDialog({ title, message, input: true, inputValue: defaultValue, inputPlaceholder: 'Type here...', primaryText: 'Save', cancelText: 'Cancel' });
+    };
+
+    (function() {
+        // ---- Auth ----
+        function checkAuth() {
+            fetch('/api/auth/check').then(r => r.json()).then(d => {
+                if (!d.authenticated) { window.location.href = '/login'; return; }
+            }).catch(() => { window.location.href = '/login'; });
+        }
+        checkAuth();
+        setInterval(checkAuth, 60000);
+
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            try { const r = await fetch('/api/auth/logout', { method: 'POST' }); const d = await r.json(); window.location.href = d.redirect || '/'; }
+            catch { window.location.href = '/'; }
+        });
+
+        // ---- Tabs ----
+        document.querySelectorAll('.admin-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // ---- Status Messages ----
+        const statusEl = document.getElementById('statusMsg');
+        function showStatus(msg, type) {
+            statusEl.textContent = msg;
+            statusEl.className = 'status-msg ' + type;
+            setTimeout(() => { statusEl.className = 'status-msg'; }, 4000);
+        }
+
+        // ---- Projects + Folders ----
+        let allProjects = [];
+        let allFolders = [];
+
+        async function loadFolders() {
+            try {
+                const res = await fetch('/api/admin/folders');
+                if (!res.ok) throw new Error('Failed to load folders');
+                allFolders = await res.json();
+                renderFolders();
+                renderFolderOptions();
+            } catch (err) {
+                console.warn(err.message);
+            }
+        }
+
+        function renderFolderOptions() {
+            const sel = document.getElementById('projFolder');
+            if (!sel) return;
+            sel.innerHTML = '<option value="">None</option>' +
+                allFolders.map(f => '<option value="' + f._id + '">' + escapeHtml(f.name) + '</option>').join('');
+        }
+
+        async function loadProjects() {
+            try {
+                const res = await fetch('/api/admin/projects');
+                allProjects = await res.json();
+                renderProjects();
+            } catch (err) {
+                document.getElementById('projectsList').innerHTML = '<p style="color:#dc3545;">Failed to load projects.</p>';
+            }
+        }
+
+        function renderProjects() {
+            const container = document.getElementById('projectsList');
+            if (allProjects.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>No projects yet.</p><p>Click "New Project" to add your first portfolio piece.</p></div>';
+                return;
+            }
+            let html = '<table class="project-table"><thead><tr><th></th><th>Title</th><th>Category</th><th>Folder</th><th>Tags</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
+            allProjects.forEach(p => {
+                const tagsDisplay = (p.tags || []).map(t => t.toUpperCase()).join(', ');
+                const thumbUrl = (p.thumbnail && p.thumbnail.url) ? escapeHtml(p.thumbnail.url) : '';
+                const thumbHtml = thumbUrl ? '<img class="project-thumb" src="' + thumbUrl + '" alt="">' : '<div class="project-thumb" style="background:var(--almond);border-radius:6px;"></div>';
+                html += '<tr>';
+                html += '<td>' + thumbHtml + '</td>';
+                html += '<td><strong>' + escapeHtml(p.title) + '</strong></td>';
+                html += '<td>' + escapeHtml(p.category) + '</td>';
+                const folderName = p.folder && p.folder.name ? p.folder.name : (p.folder ? '(unknown)' : 'None');
+                html += '<td>' + escapeHtml(folderName) + '</td>';
+                html += '<td style="font-size:0.75rem;">' + escapeHtml(tagsDisplay) + '</td>';
+                html += '<td><span class="badge ' + (p.published ? 'badge-published' : 'badge-draft') + '">' + (p.published ? 'Published' : 'Draft') + '</span></td>';
+                html += '<td><div class="actions-cell">';
+                html += '<button class="btn-secondary btn-sm" data-action="edit" data-id="' + p._id + '">Edit</button>';
+                html += '<button class="btn-secondary btn-sm" data-action="gallery" data-id="' + p._id + '">Gallery</button>';
+                html += '<button class="btn-danger btn-sm" data-action="delete" data-id="' + p._id + '">Delete</button>';
+                html += '</div></td>';
+                html += '</tr>';
+            });
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        function renderFolders() {
+            const container = document.getElementById('foldersList');
+            if (!container) return;
+            if (allFolders.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>No folders yet.</p></div>';
+                return;
+            }
+            let html = '<table class="project-table"><thead><tr><th>Name</th><th>Cover</th><th style="text-align:center;">Visible</th><th>Actions</th></tr></thead><tbody>';
+            allFolders.forEach(folder => {
+                const coverUrl = folder.coverImage && folder.coverImage.url ? folder.coverImage.url : '/Logo.png';
+                html += '<tr>';
+                html += '<td>' + escapeHtml(folder.name) + '</td>';
+                html += '<td>' +
+                    '<div style="display:flex;align-items:center;gap:8px;">' +
+                        '<img src="' + escapeHtml(coverUrl) + '" alt="Folder cover" style="width:54px;height:40px;object-fit:cover;border-radius:6px;border:1px solid var(--almond);">' +
+                        '<label class="btn-secondary btn-sm" style="cursor:pointer;">Upload<input type="file" accept="image/*" class="folder-cover-input" data-id="' + folder._id + '" style="display:none;"></label>' +
+                    '</div>' +
+                '</td>';
+                html += '<td style="text-align:center;"><label class="folder-visibility"><input type="checkbox" class="folder-visible-checkbox" data-id="' + folder._id + '"' + (folder.visible ? ' checked' : '') + '><span>Show on site</span></label></td>';
+                html += '<td><div class="actions-cell">';
+                html += '<button class="btn-secondary btn-sm" data-foaction="edit" data-id="' + folder._id + '" data-name="' + escapeHtml(folder.name) + '">Edit</button>';
+                html += '<button class="btn-danger btn-sm" data-foaction="delete" data-id="' + folder._id + '">Delete</button>';
+                html += '</div></td>';
+                html += '</tr>';
+            });
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+
+        // Event delegation for project action buttons
+        document.getElementById('projectsList').addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-action]');
+            if (!btn) return;
+            const action = btn.dataset.action;
+            const id = btn.dataset.id;
+            if (action === 'edit') editProject(id);
+            else if (action === 'gallery') openGallery(id);
+            else if (action === 'delete') deleteProject(id);
+        });
+
+        document.getElementById('foldersList').addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-foaction]');
+            if (!btn) return;
+            const action = btn.dataset.foaction;
+            const id = btn.dataset.id;
+            if (action === 'delete') deleteFolder(id);
+            else if (action === 'edit') editFolder(id, btn.dataset.name);
+        });
+
+        document.getElementById('foldersList').addEventListener('change', (e) => {
+            const chk = e.target.closest('.folder-visible-checkbox');
+            if (!chk) return;
+            const id = chk.dataset.id;
+            const visible = chk.checked;
+            setFolderVisibility(id, visible);
+        });
+
+        document.getElementById('foldersList').addEventListener('change', (e) => {
+            const fileInput = e.target.closest('.folder-cover-input');
+            if (!fileInput || !fileInput.files || !fileInput.files[0]) return;
+            const id = fileInput.dataset.id;
+            uploadFolderCover(id, fileInput.files[0]);
+            fileInput.value = '';
+        });
+
+        async function setFolderVisibility(id, visible) {
+            try {
+                const res = await fetch('/api/admin/folders/' + id, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ visible })
+                });
+                if (!res.ok) {
+                    const data = await res.json();
+                    throw new Error(data.message || 'Failed to update folder visibility');
+                }
+                showStatus('Folder visibility updated', 'success');
+                loadFolders();
+            } catch (err) {
+                showStatus(err.message, 'error');
+            }
+        }
+
+        async function uploadFolderCover(id, file) {
+            try {
+                const fd = new FormData();
+                fd.append('image', file);
+                const res = await fetch('/api/admin/folders/' + id + '/cover-image', {
+                    method: 'PUT',
+                    body: fd
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Failed to upload folder cover image.');
+                showStatus('Folder cover image updated.', 'success');
+                loadFolders();
+            } catch (err) {
+                showStatus(err.message, 'error');
+            }
+        }
+
+        document.getElementById('btnNewFolder').addEventListener('click', async () => {
+            const name = await window.showPrompt('New Folder', 'Enter a new folder name (max 80 chars):');
+            if (!name) return;
+            createFolder(name);
+        });
+
+        async function createFolder(name) {
+            const trimmed = name.trim().substring(0, 80);
+            if (!trimmed) return;
+            try {
+                const res = await fetch('/api/admin/folders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: trimmed })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Failed to create folder.');
+                showStatus('Folder created!', 'success');
+                loadFolders();
+            } catch (err) {
+                showStatus(err.message, 'error');
+            }
+        }
+
+        async function deleteFolder(id) {
+            const confirmed = await window.showConfirm('Delete this folder? Projects in it will be unassigned from any folder.');
+            if (!confirmed) return;
+            try {
+                const res = await fetch('/api/admin/folders/' + id, { method: 'DELETE' });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Failed to delete folder.');
+                showStatus('Folder deleted.', 'success');
+                loadFolders();
+                loadProjects();
+            } catch (err) {
+                showStatus(err.message, 'error');
+            }
+        }
+
+        async function editFolder(id, currentName) {
+            const name = await window.showPrompt('Edit Folder', 'Rename folder (max 80 chars):', currentName || '');
+            if (!name) return;
+
+            try {
+                const res = await fetch('/api/admin/folders/' + id, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: name.trim().substring(0, 80) })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Failed to rename folder.');
+                showStatus('Folder renamed.', 'success');
+                loadFolders();
+                loadProjects();
+            } catch (err) {
+                showStatus(err.message, 'error');
+            }
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // ---- New / Edit Project Modal ----
+        const projectModal = document.getElementById('projectModal');
+        const projectForm = document.getElementById('projectForm');
+        let editingProjectId = null;
+
+        document.getElementById('btnNewProject').addEventListener('click', () => {
+            editingProjectId = null;
+            document.getElementById('modalTitle').textContent = 'New Project';
+            projectForm.reset();
+            document.getElementById('projPublished').checked = true;
+            document.getElementById('thumbPreview').style.display = 'none';
+            document.getElementById('thumbZone').style.display = '';
+            document.getElementById('projectId').value = '';
+            document.getElementById('projGallery').value = '';
+            document.getElementById('galleryPreviewRow').innerHTML = '';
+            projectModal.classList.add('active');
+        });
+
+        document.getElementById('btnCancelProject').addEventListener('click', () => {
+            projectModal.classList.remove('active');
+        });
+
+        // Close modal on overlay click
+        projectModal.addEventListener('click', (e) => {
+            if (e.target === projectModal) projectModal.classList.remove('active');
+        });
+
+        // Thumbnail preview
+        document.getElementById('projThumbnail').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const prev = document.getElementById('thumbPreview');
+                    prev.src = ev.target.result;
+                    prev.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Gallery preview
+        document.getElementById('projGallery').addEventListener('change', (e) => {
+            const row = document.getElementById('galleryPreviewRow');
+            row.innerHTML = '';
+            Array.from(e.target.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    const img = document.createElement('img');
+                    img.src = ev.target.result;
+                    img.className = 'preview-img';
+                    img.style.display = 'block';
+                    img.style.width = '80px';
+                    img.style.height = '60px';
+                    row.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        // Save project
+        projectForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnSaveProject');
+            btn.disabled = true; btn.textContent = 'Saving...';
+
+            const fd = new FormData();
+            fd.append('title', document.getElementById('projTitle').value);
+            fd.append('category', document.getElementById('projCategory').value);
+            fd.append('description', document.getElementById('projDescription').value);
+            fd.append('tags', document.getElementById('projTags').value);
+            fd.append('client', document.getElementById('projClient').value);
+            fd.append('year', document.getElementById('projYear').value);
+            fd.append('folder', document.getElementById('projFolder').value || '');
+            fd.append('published', document.getElementById('projPublished').checked);
+
+            const thumbFile = document.getElementById('projThumbnail').files[0];
+            if (thumbFile) fd.append('thumbnail', thumbFile);
+
+            const galleryFiles = document.getElementById('projGallery').files;
+            for (const f of galleryFiles) fd.append('images', f);
+
+            try {
+                const url = editingProjectId ? '/api/admin/projects/' + editingProjectId : '/api/admin/projects';
+                const method = editingProjectId ? 'PUT' : 'POST';
+                const res = await fetch(url, { method, body: fd });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Failed to save.');
+                projectModal.classList.remove('active');
+                showStatus(editingProjectId ? 'Project updated!' : 'Project created!', 'success');
+                loadProjects();
+            } catch (err) {
+                showStatus(err.message, 'error');
+            } finally {
+                btn.disabled = false; btn.textContent = 'Save Project';
+            }
+        });
+
+        // Edit project
+        function editProject(id) {
+            const p = allProjects.find(pr => pr._id === id);
+            if (!p) return;
+            editingProjectId = id;
+            document.getElementById('modalTitle').textContent = 'Edit Project';
+            document.getElementById('projTitle').value = p.title;
+            document.getElementById('projCategory').value = p.category;
+            document.getElementById('projDescription').value = p.description || '';
+            document.getElementById('projTags').value = (p.tags || []).join(', ');
+            document.getElementById('projClient').value = p.client || '';
+            document.getElementById('projYear').value = p.year || '';
+            document.getElementById('projPublished').checked = p.published;
+            document.getElementById('projFolder').value = p.folder && p.folder._id ? p.folder._id : '';
+            // Show existing thumbnail
+            const prev = document.getElementById('thumbPreview');
+            if (p.thumbnail && p.thumbnail.url) {
+                prev.src = p.thumbnail.url;
+                prev.style.display = 'block';
+            } else {
+                prev.style.display = 'none';
+            }
+            document.getElementById('projThumbnail').value = '';
+            document.getElementById('projGallery').value = '';
+            document.getElementById('galleryPreviewRow').innerHTML = '';
+            projectModal.classList.add('active');
+        }
+
+        // Delete project
+        async function deleteProject(id) {
+            const confirmed = await window.showConfirm('Delete this project? This cannot be undone.');
+            if (!confirmed) return;
+            try {
+                const res = await fetch('/api/admin/projects/' + id, { method: 'DELETE' });
+                if (!res.ok) {
+                    const data = await res.json();
+                    throw new Error(data.message || 'Failed to delete project.');
+                }
+                showStatus('Project deleted.', 'success');
+                loadProjects();
+            } catch (err) {
+                showStatus(err.message, 'error');
+            }
+        }
+
+        // ---- Gallery Modal ----
+        const galleryModal = document.getElementById('galleryModal');
+        let galleryProjectId = null;
+
+        function openGallery(id) {
+            const p = allProjects.find(pr => pr._id === id);
+            if (!p) return;
+            galleryProjectId = id;
+            document.getElementById('galleryProjectName').textContent = p.title;
+            renderGallery(p.images || []);
+            galleryModal.classList.add('active');
+        }
+
+        function renderGallery(images) {
+            const grid = document.getElementById('galleryGrid');
+            if (images.length === 0) {
+                grid.innerHTML = '<p style="color:var(--text-light);font-size:0.85rem;">No gallery images yet.</p>';
+                return;
+            }
+            grid.innerHTML = images.map(img => {
+                const imgUrl = (img && img.url) ? escapeHtml(img.url) : '';
+                const pubId = (img && img.publicId) ? escapeHtml(img.publicId) : '';
+                return '<div class="gallery-item">' +
+                    '<img src="' + imgUrl + '" alt="">' +
+                    '<button class="remove-img" data-publicid="' + pubId + '">&times;</button>' +
+                    '</div>';
+            }).join('');
+        }
+
+        // Event delegation for gallery remove buttons
+        document.getElementById('galleryGrid').addEventListener('click', (e) => {
+            const btn = e.target.closest('.remove-img');
+            if (!btn) return;
+            const publicId = btn.dataset.publicid;
+            if (publicId) removeGalleryImage(publicId);
+        });
+
+        document.getElementById('btnCloseGallery').addEventListener('click', () => {
+            galleryModal.classList.remove('active');
+        });
+        galleryModal.addEventListener('click', (e) => {
+            if (e.target === galleryModal) galleryModal.classList.remove('active');
+        });
+
+        // Upload gallery images
+        document.getElementById('btnUploadGallery').addEventListener('click', async () => {
+            const files = document.getElementById('galleryFileInput').files;
+            if (!files.length) return showStatus('Select images first.', 'error');
+            const fd = new FormData();
+            for (const f of files) fd.append('images', f);
+            try {
+                const res = await fetch('/api/admin/projects/' + galleryProjectId + '/images', { method: 'POST', body: fd });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message);
+                showStatus('Images uploaded!', 'success');
+                renderGallery(data.images || []);
+                // Update local cache
+                const p = allProjects.find(pr => pr._id === galleryProjectId);
+                if (p) p.images = data.images;
+                document.getElementById('galleryFileInput').value = '';
+            } catch (err) { showStatus(err.message, 'error'); }
+        });
+
+        // Remove gallery image
+        async function removeGalleryImage(publicId) {
+            const confirmed = await window.showConfirm('Remove this image from the gallery?');
+            if (!confirmed) return;
+            try {
+                const res = await fetch('/api/admin/projects/' + galleryProjectId + '/images/' + encodeURIComponent(publicId), { method: 'DELETE' });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message);
+                showStatus('Image removed.', 'success');
+                renderGallery(data.images || []);
+                const p = allProjects.find(pr => pr._id === galleryProjectId);
+                if (p) p.images = data.images;
+            } catch (err) { showStatus(err.message, 'error'); }
+        }
+
+        // ---- Site Settings (Hero / About Images) ----
+        async function loadSettings() {
+            try {
+                const res = await fetch('/api/admin/settings');
+                const data = await res.json();
+                if (data.heroImage && data.heroImage.url) {
+                    document.getElementById('heroPreviewWrap').innerHTML = '<img class="current-img" src="' + escapeHtml(data.heroImage.url) + '" alt="Hero">';
+                }
+                if (data.aboutImage && data.aboutImage.url) {
+                    document.getElementById('aboutPreviewWrap').innerHTML = '<img class="current-img" src="' + escapeHtml(data.aboutImage.url) + '" alt="About">';
+                }
+            } catch {}
+        }
+
+        document.getElementById('btnUploadHero').addEventListener('click', async () => {
+            const file = document.getElementById('heroFileInput').files[0];
+            if (!file) return showStatus('Select an image first.', 'error');
+            const fd = new FormData(); fd.append('image', file);
+            try {
+                const res = await fetch('/api/admin/settings/hero-image', { method: 'PUT', body: fd });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message);
+                document.getElementById('heroPreviewWrap').innerHTML = '<img class="current-img" src="' + escapeHtml(data.heroImage.url) + '" alt="Hero">';
+                document.getElementById('heroFileInput').value = '';
+                showStatus('Hero image updated!', 'success');
+            } catch (err) { showStatus(err.message, 'error'); }
+        });
+
+        document.getElementById('btnUploadAbout').addEventListener('click', async () => {
+            const file = document.getElementById('aboutFileInput').files[0];
+            if (!file) return showStatus('Select an image first.', 'error');
+            const fd = new FormData(); fd.append('image', file);
+            try {
+                const res = await fetch('/api/admin/settings/about-image', { method: 'PUT', body: fd });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message);
+                document.getElementById('aboutPreviewWrap').innerHTML = '<img class="current-img" src="' + escapeHtml(data.aboutImage.url) + '" alt="About">';
+                document.getElementById('aboutFileInput').value = '';
+                showStatus('About image updated!', 'success');
+            } catch (err) { showStatus(err.message, 'error'); }
+        });
+
+        // ---- Init ----
+        loadFolders();
+        loadProjects();
+        loadSettings();
+    })();
+    </script>
+</body>
+</html>

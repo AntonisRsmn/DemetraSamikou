@@ -132,32 +132,12 @@ ul {
 
 .logo {
     display: flex;
-    flex-direction: column;
-    line-height: 1.1;
+    align-items: center;
 }
 
-.logo-name {
-    font-family: 'Berkshire Swash', cursive;
-    font-size: 1.5rem;
-    font-weight: 400;
-    color: var(--antique-ruby);
-    letter-spacing: 0.5px;
-}
-
-.logo-d {
-    font-family: 'Berkshire Swash', cursive;
-    font-size: 1.35em;
-    line-height: 1;
-    margin-right: -0.03em;
-}
-
-.logo-subtitle {
-    font-family: 'Great Vibes', cursive;
-    font-size: 0.95rem;
-    font-weight: 400;
-    color: var(--deep-puce);
-    letter-spacing: 0.5px;
-    margin-top: 1px;
+.logo-img {
+    height: 52px;
+    width: auto;
 }
 
 .nav-links {
@@ -540,14 +520,23 @@ ul {
 
 .portfolio-item {
     opacity: 1;
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    transform: scale(1) translateY(0);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.portfolio-item.hiding {
+    opacity: 0;
+    transform: scale(0.95) translateY(8px);
+    pointer-events: none;
 }
 
 .portfolio-item.hidden {
+    display: none;
+}
+
+.portfolio-item.showing {
     opacity: 0;
-    transform: scale(0.95);
-    position: absolute;
-    pointer-events: none;
+    transform: scale(0.95) translateY(8px);
 }
 
 .portfolio-card {
@@ -558,6 +547,9 @@ ul {
     box-shadow: 0 4px 20px rgba(120, 23, 39, 0.06);
     transition: all var(--transition);
     cursor: pointer;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .portfolio-card:hover {
@@ -566,22 +558,30 @@ ul {
 }
 
 .portfolio-image {
+    position: relative;
     overflow: hidden;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    flex: 0 0 auto;
 }
 
+.portfolio-image img,
 .portfolio-image svg {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
     display: block;
     transition: transform 0.5s ease;
 }
 
+.portfolio-card:hover .portfolio-image img,
 .portfolio-card:hover .portfolio-image svg {
     transform: scale(1.05);
 }
 
 .portfolio-info {
     padding: 20px 24px;
+    flex-grow: 1;
 }
 
 .portfolio-info h3 {
@@ -1076,6 +1076,16 @@ ul {
     border-top: 1px solid rgba(226, 179, 194, 0.15);
     font-size: 0.8rem;
     opacity: 0.6;
+}
+
+.admin-login-link {
+    color: var(--champagne);
+    opacity: 0.3;
+    transition: opacity var(--transition);
+}
+
+.admin-login-link:hover {
+    opacity: 0.8;
 }
 
 /* ---- Animations ---- */

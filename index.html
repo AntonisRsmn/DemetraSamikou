@@ -21,8 +21,7 @@
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="#" class="logo">
-                <span class="logo-name"><span class="logo-d">D</span>emetra Samikou</span>
-                <span class="logo-subtitle">Graphic Designer</span>
+                <img src="Logo.png" alt="Demetra Samikou - Graphic Designer" class="logo-img">
             </a>
             <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
                 <span></span>
@@ -53,7 +52,7 @@
             </div>
         </div>
         <div class="hero-image">
-            <div class="hero-image-placeholder">
+            <div class="hero-image-placeholder" id="heroImageWrap">
                 <svg viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="400" height="500" rx="20" fill="#EFD4C4"/>
                     <circle cx="200" cy="180" r="60" fill="#E2B3C2"/>
@@ -105,7 +104,7 @@
         <div class="container">
             <div class="about-grid">
                 <div class="about-image">
-                    <div class="about-image-placeholder">
+                    <div class="about-image-placeholder" id="aboutImageWrap">
                         <svg viewBox="0 0 500 600" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect width="500" height="600" rx="16" fill="#F2E5C6"/>
                             <circle cx="250" cy="230" r="80" fill="#E2B3C2"/>
@@ -145,153 +144,21 @@
             <div class="section-header">
                 <span class="section-tag">Portfolio</span>
                 <h2 class="section-title">Selected Works</h2>
-                <p class="section-description">A curated collection of my recent design projects</p>
+                <p class="section-description">Browse selected folders from my design portfolio</p>
             </div>
 
             <!-- Portfolio Filter -->
-            <div class="portfolio-filters">
+            <div class="portfolio-filters" id="portfolioFilters">
                 <button class="filter-btn active" data-filter="all">All</button>
-                <button class="filter-btn" data-filter="branding">Branding</button>
-                <button class="filter-btn" data-filter="print">Print</button>
-                <button class="filter-btn" data-filter="digital">Digital</button>
-                <button class="filter-btn" data-filter="packaging">Packaging</button>
             </div>
 
-            <!-- Portfolio Grid -->
-            <div class="portfolio-grid">
-                <div class="portfolio-item" data-category="branding">
-                    <div class="portfolio-card">
-                        <div class="portfolio-image">
-                            <svg viewBox="0 0 600 450" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="600" height="450" fill="#F2E5C6"/>
-                                <rect x="50" y="50" width="200" height="200" rx="100" fill="#E2B3C2"/>
-                                <rect x="300" y="80" width="250" height="16" rx="8" fill="#AC5B67" opacity="0.5"/>
-                                <rect x="300" y="120" width="180" height="12" rx="6" fill="#AC5B67" opacity="0.3"/>
-                                <rect x="300" y="150" width="220" height="12" rx="6" fill="#AC5B67" opacity="0.3"/>
-                                <rect x="50" y="300" width="500" height="100" rx="10" fill="#EFD4C4"/>
-                            </svg>
-                        </div>
-                        <div class="portfolio-info">
-                            <h3>Brand Identity Project</h3>
-                            <p>Branding</p>
-                        </div>
-                        <div class="portfolio-overlay">
-                            <span>View Project →</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="portfolio-item" data-category="digital">
-                    <div class="portfolio-card">
-                        <div class="portfolio-image">
-                            <svg viewBox="0 0 600 450" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="600" height="450" fill="#781727" opacity="0.15"/>
-                                <rect x="40" y="40" width="520" height="300" rx="12" fill="#EFD4C4"/>
-                                <circle cx="300" cy="180" r="60" fill="#AC5B67" opacity="0.4"/>
-                                <rect x="100" y="370" width="150" height="40" rx="20" fill="#781727" opacity="0.3"/>
-                                <rect x="350" y="370" width="150" height="40" rx="20" fill="#781727" opacity="0.3"/>
-                            </svg>
-                        </div>
-                        <div class="portfolio-info">
-                            <h3>Website Redesign</h3>
-                            <p>Digital</p>
-                        </div>
-                        <div class="portfolio-overlay">
-                            <span>View Project →</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="portfolio-item" data-category="packaging">
-                    <div class="portfolio-card">
-                        <div class="portfolio-image">
-                            <svg viewBox="0 0 600 450" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="600" height="450" fill="#EFD4C4"/>
-                                <rect x="150" y="50" width="300" height="350" rx="8" fill="#F2E5C6"/>
-                                <rect x="200" y="120" width="200" height="20" rx="10" fill="#781727" opacity="0.4"/>
-                                <rect x="220" y="160" width="160" height="10" rx="5" fill="#AC5B67" opacity="0.4"/>
-                                <circle cx="300" cy="270" r="50" fill="#E2B3C2"/>
-                            </svg>
-                        </div>
-                        <div class="portfolio-info">
-                            <h3>Product Packaging</h3>
-                            <p>Packaging</p>
-                        </div>
-                        <div class="portfolio-overlay">
-                            <span>View Project →</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="portfolio-item" data-category="print">
-                    <div class="portfolio-card">
-                        <div class="portfolio-image">
-                            <svg viewBox="0 0 600 450" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="600" height="450" fill="#E2B3C2" opacity="0.3"/>
-                                <rect x="50" y="30" width="240" height="390" rx="8" fill="#F2E5C6"/>
-                                <rect x="310" y="30" width="240" height="390" rx="8" fill="#EFD4C4"/>
-                                <rect x="80" y="80" width="180" height="14" rx="7" fill="#781727" opacity="0.4"/>
-                                <rect x="80" y="110" width="140" height="10" rx="5" fill="#AC5B67" opacity="0.3"/>
-                                <rect x="340" y="80" width="180" height="14" rx="7" fill="#781727" opacity="0.4"/>
-                                <rect x="340" y="110" width="140" height="10" rx="5" fill="#AC5B67" opacity="0.3"/>
-                            </svg>
-                        </div>
-                        <div class="portfolio-info">
-                            <h3>Editorial Layout</h3>
-                            <p>Print</p>
-                        </div>
-                        <div class="portfolio-overlay">
-                            <span>View Project →</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="portfolio-item" data-category="branding">
-                    <div class="portfolio-card">
-                        <div class="portfolio-image">
-                            <svg viewBox="0 0 600 450" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="600" height="450" fill="#F2E5C6"/>
-                                <circle cx="200" cy="225" r="120" fill="#E2B3C2" opacity="0.5"/>
-                                <circle cx="400" cy="225" r="120" fill="#AC5B67" opacity="0.2"/>
-                                <rect x="200" y="380" width="200" height="12" rx="6" fill="#781727" opacity="0.3"/>
-                            </svg>
-                        </div>
-                        <div class="portfolio-info">
-                            <h3>Visual Identity System</h3>
-                            <p>Branding</p>
-                        </div>
-                        <div class="portfolio-overlay">
-                            <span>View Project →</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="portfolio-item" data-category="digital">
-                    <div class="portfolio-card">
-                        <div class="portfolio-image">
-                            <svg viewBox="0 0 600 450" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect width="600" height="450" fill="#EFD4C4"/>
-                                <rect x="60" y="40" width="200" height="370" rx="24" fill="white"/>
-                                <rect x="90" y="80" width="140" height="20" rx="10" fill="#E2B3C2"/>
-                                <rect x="90" y="120" width="140" height="140" rx="8" fill="#F2E5C6"/>
-                                <rect x="340" y="40" width="200" height="370" rx="24" fill="white"/>
-                                <rect x="370" y="80" width="140" height="20" rx="10" fill="#AC5B67" opacity="0.4"/>
-                                <rect x="370" y="120" width="140" height="140" rx="8" fill="#F2E5C6"/>
-                            </svg>
-                        </div>
-                        <div class="portfolio-info">
-                            <h3>Social Media Campaign</h3>
-                            <p>Digital</p>
-                        </div>
-                        <div class="portfolio-overlay">
-                            <span>View Project →</span>
-                        </div>
-                    </div>
-                </div>
+            <!-- Portfolio Grid (loaded dynamically from API) -->
+            <div class="portfolio-grid" id="portfolioGrid">
+                <!-- Projects loaded via JavaScript -->
             </div>
 
             <div class="portfolio-cta">
-                <a href="#contact" class="btn btn-primary">See All Projects</a>
+                <a href="/projects" class="btn btn-primary">See All Projects</a>
             </div>
         </div>
     </section>
@@ -501,13 +368,13 @@
                                 <rect x="2" y="4" width="20" height="16" rx="2"/>
                                 <path d="M22 4L12 13 2 4"/>
                             </svg>
-                            <span>hello@Demetrasamikou.com</span>
+                            <span>samikou.mika@gmail.com</span>
                         </div>
                         <div class="contact-item">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
                             </svg>
-                            <span>+30 123 456 7890</span>
+                            <span>+30 694 926 2949</span>
                         </div>
                         <div class="contact-item">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -622,6 +489,9 @@
             <div class="footer-bottom">
                 <p>&copy; 2026 Demetra Samikou. All rights reserved.</p>
                 <p>Website made by <a href="https://rusman.gr" target="_blank" rel="noopener noreferrer">Antonios Rusman</a></p>
+                <a href="/login" class="admin-login-link" title="Admin Login">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                </a>
             </div>
         </div>
     </footer>

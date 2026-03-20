@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project — Demetra Samikou</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ── Fade-in animation ── */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── Project Hero Banner ── */
+        .project-banner {
+            position: relative;
+            width: 100%;
+            height: 52vh;
+            min-height: 340px;
+            max-height: 560px;
+            overflow: hidden;
+            background: var(--champagne);
+        }
+        .project-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .project-banner-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(30, 2, 8, 0.65) 0%, transparent 60%);
+        }
+
+        /* ── Project Hero (no banner) ── */
+        .project-hero-section {
+            max-width: 1060px;
+            margin: 0 auto;
+            padding: 32px 32px 40px;
+        }
+
+        /* ── Back link ── */
+        .project-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-medium);
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: color 0.3s, gap 0.3s;
+            margin-bottom: 28px;
+        }
+        .project-back:hover { color: var(--antique-ruby); gap: 12px; }
+
+        /* ── Project Title ── */
+        .project-hero-section h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            line-height: 1.15;
+            letter-spacing: -0.5px;
+        }
+        .project-header-divider {
+            width: 48px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--antique-ruby), var(--pink-pearl));
+            border-radius: 2px;
+            margin-bottom: 24px;
+        }
+
+        /* ── Meta pills ── */
+        .project-meta-pills {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+        .meta-pill {
+            padding: 6px 16px;
+            background: var(--white);
+            border: 1px solid var(--almond);
+            border-radius: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--text-medium);
+            letter-spacing: 0.5px;
+        }
+        .meta-pill-accent {
+            background: linear-gradient(135deg, var(--champagne), var(--almond));
+            border-color: rgba(172, 91, 103, 0.15);
+            color: var(--deep-wine);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ── Description ── */
+        .project-description {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.9;
+            color: var(--text-medium);
+            max-width: 720px;
+            margin-bottom: 8px;
+        }
+
+        /* ── Tags ── */
+        .project-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        .project-tag {
+            padding: 5px 14px;
+            background: linear-gradient(135deg, var(--champagne), var(--almond));
+            color: var(--text-dark);
+            border-radius: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            border: 1px solid rgba(172, 91, 103, 0.1);
+        }
+
+        /* ── Gallery Grid ── */
+        .project-gallery {
+            max-width: 1060px;
+            margin: 0 auto 80px;
+            padding: 0 32px;
+        }
+        .project-gallery h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+        .gallery-divider {
+            width: 36px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--antique-ruby), var(--pink-pearl));
+            border-radius: 2px;
+            margin-bottom: 28px;
+        }
+        .gallery-grid {
+            columns: 3;
+            column-gap: 16px;
+        }
+        .gallery-grid-item {
+            break-inside: avoid;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            background: var(--champagne);
+            margin-bottom: 16px;
+        }
+        .gallery-grid-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 32px rgba(120,23,39,0.12);
+        }
+        .gallery-grid-item img {
+            width: 100%;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .gallery-grid-item:hover img {
+            transform: scale(1.03);
+        }
+        /* Make single images full-width */
+        .gallery-grid.single-image {
+            columns: 1;
+            max-width: 720px;
+        }
+
+        /* ── Lightbox ── */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        .lightbox.active { display: flex; }
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 88vh;
+            border-radius: 10px;
+            box-shadow: 0 16px 64px rgba(0,0,0,0.4);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 24px;
+            right: 32px;
+            color: rgba(255,255,255,0.8);
+            font-size: 2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.3s, transform 0.3s;
+            line-height: 1;
+        }
+        .lightbox-close:hover { color: #fff; transform: scale(1.15); }
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.7);
+            font-size: 2.8rem;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 50%;
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+            line-height: 1;
+        }
+        .lightbox-nav:hover {
+            background: rgba(255,255,255,0.18);
+            color: #fff;
+        }
+        .lightbox-prev { left: 20px; }
+        .lightbox-next { right: 20px; }
+        .lightbox-counter {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.6);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+
+        /* ── States ── */
+        .project-loading {
+            text-align: center;
+            padding: 160px 32px;
+            color: var(--text-light);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+        .project-not-found {
+            text-align: center;
+            padding: 160px 32px;
+        }
+        .project-not-found h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+        }
+        .project-not-found a {
+            color: var(--antique-ruby);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .project-not-found a:hover { color: var(--dark-maroon); }
+
+        /* ── Responsive ── */
+        @media (max-width: 1024px) {
+            .project-hero-section h1 { font-size: 2.6rem; }
+        }
+        @media (max-width: 768px) {
+            .project-banner { height: 40vh; min-height: 260px; }
+            .project-hero-section h1 { font-size: 2rem; }
+            .project-hero-section { padding: 24px 20px 32px; }
+            .gallery-grid { columns: 2; column-gap: 12px; }
+            .lightbox-nav { width: 40px; height: 40px; font-size: 2rem; }
+            .lightbox-prev { left: 10px; }
+            .lightbox-next { right: 10px; }
+        }
+        @media (max-width: 480px) {
+            .project-hero-section { padding: 20px 20px 28px; }
+            .project-gallery { padding: 0 20px; }
+            .project-hero-section h1 { font-size: 1.7rem; }
+            .gallery-grid { columns: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="nav-overlay" id="navOverlay"></div>
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <img src="/Logo.png" alt="Demetra Samikou - Graphic Designer" class="logo-img">
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li class="nav-close-wrapper"><button class="nav-close" id="navClose" aria-label="Close menu">&times;</button></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/#about">About</a></li>
+                <li><a href="/#portfolio">Portfolio</a></li>
+                <li><a href="/projects">All Projects</a></li>
+                <li><a href="/#services">Services</a></li>
+                <li><a href="/#contact" class="nav-cta">Get in Touch</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="projectContent">
+        <div class="project-loading">Loading project...</div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose">&times;</button>
+        <button class="lightbox-nav lightbox-prev" id="lightboxPrev">&#8249;</button>
+        <img id="lightboxImg" src="" alt="">
+        <button class="lightbox-nav lightbox-next" id="lightboxNext">&#8250;</button>
+        <div class="lightbox-counter" id="lightboxCounter"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="logo">
+                        <span class="logo-name"><span class="logo-d">D</span>emetra Samikou</span>
+                        <span class="logo-subtitle">Graphic Designer</span>
+                    </a>
+                    <p>Graphic Designer & Visual Storyteller based in Athens, Greece. Creating brands that captivate and inspire.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/#about">About</a></li>
+                        <li><a href="/#portfolio">Portfolio</a></li>
+                        <li><a href="/#services">Services</a></li>
+                        <li><a href="/#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="/#services">Brand Identity</a></li>
+                        <li><a href="/#services">Web Design</a></li>
+                        <li><a href="/#services">Print Design</a></li>
+                        <li><a href="/#services">Packaging</a></li>
+                        <li><a href="/#services">Social Media</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Stay Updated</h4>
+                    <p>Subscribe for design tips and project updates.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email" required>
+                        <button type="submit" class="btn btn-primary">→</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Demetra Samikou. All rights reserved.</p>
+                <p>Website made by <a href="https://rusman.gr" target="_blank" rel="noopener noreferrer">Antonios Rusman</a></p>
+                <a href="/login" class="admin-login-link" title="Admin Login">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    (function() {
+        // Nav toggle
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+        const navOverlay = document.getElementById('navOverlay');
+        const navbar = document.getElementById('navbar');
+
+        function closeNav() {
+            navToggle.classList.remove('active');
+            navLinks.classList.remove('active');
+            navOverlay.classList.remove('active');
+            document.body.classList.remove('nav-open');
+        }
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.contains('active') ? closeNav() : (() => {
+                navToggle.classList.add('active'); navLinks.classList.add('active');
+                navOverlay.classList.add('active'); document.body.classList.add('nav-open');
+            })();
+        });
+        navOverlay.addEventListener('click', closeNav);
+        const navClose = document.getElementById('navClose');
+        if (navClose) navClose.addEventListener('click', closeNav);
+        navLinks.querySelectorAll('a').forEach(l => l.addEventListener('click', closeNav));
+        window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 50));
+
+        // Get slug from URL
+        const pathParts = window.location.pathname.split('/');
+        const slug = pathParts[pathParts.length - 1];
+
+        async function loadProject() {
+            try {
+                const res = await fetch('/api/projects/' + encodeURIComponent(slug));
+                if (!res.ok) throw new Error('Not found');
+                const project = await res.json();
+                document.title = project.title + ' — Demetra Samikou';
+                renderProject(project);
+            } catch {
+                document.getElementById('projectContent').innerHTML =
+                    '<div class="project-not-found"><h1>Project Not Found</h1><p><a href="/projects">← Browse all projects</a></p></div>';
+            }
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            const d = document.createElement('div'); d.textContent = str; return d.innerHTML;
+        }
+
+        function renderProject(p) {
+            const folderRef = p.folder;
+            const backHref = folderRef ? '/projects?folder=' + encodeURIComponent(folderRef._id || folderRef) : '/projects';
+            const backLabel = folderRef && folderRef.name ? '← Back to ' + escapeHtml(folderRef.name) : '← Back to Projects';
+
+            let html = '';
+
+            // Hero section: back link + title + meta + description
+            html += '<div class="project-hero-section fade-up">';
+            html += '<a href="' + backHref + '" class="project-back">' + backLabel + '</a>';
+            html += '<h1>' + escapeHtml(p.title) + '</h1>';
+            html += '<div class="project-header-divider"></div>';
+
+            // Meta pills row
+            html += '<div class="project-meta-pills">';
+            html += '<span class="meta-pill meta-pill-accent">' + escapeHtml(p.category) + '</span>';
+            if (p.client) html += '<span class="meta-pill">Client: ' + escapeHtml(p.client) + '</span>';
+            if (p.year) html += '<span class="meta-pill">' + escapeHtml(String(p.year)) + '</span>';
+            if (folderRef && folderRef.name) html += '<span class="meta-pill">' + escapeHtml(folderRef.name) + '</span>';
+            html += '</div>';
+
+            // Description
+            if (p.description) {
+                html += '<div class="project-description">' + escapeHtml(p.description).replace(/\n/g, '<br>') + '</div>';
+            }
+
+            // Tags
+            if (p.tags && p.tags.length) {
+                html += '<div class="project-tags">';
+                p.tags.forEach(t => { html += '<span class="project-tag">' + escapeHtml(t) + '</span>'; });
+                html += '</div>';
+            }
+
+            html += '</div>'; // project-hero-section
+
+            // Gallery Grid
+            if (p.images && p.images.length > 0) {
+                html += '<section class="project-gallery fade-up"><h2>Gallery</h2><div class="gallery-divider"></div>';
+                const gridClass = p.images.length === 1 ? 'gallery-grid single-image' : 'gallery-grid';
+                html += '<div class="' + gridClass + '">';
+                p.images.forEach((img, i) => {
+                    html += '<div class="gallery-grid-item" data-index="' + i + '">';
+                    html += '<img src="' + escapeHtml(img.url) + '" alt="' + escapeHtml(p.title) + ' - Image ' + (i+1) + '" loading="lazy">';
+                    html += '</div>';
+                });
+                html += '</div>';
+                html += '</section>';
+            }
+
+            document.getElementById('projectContent').innerHTML = html;
+
+            // Trigger fade-in animations
+            requestAnimationFrame(() => {
+                document.querySelectorAll('.fade-up').forEach((el, i) => {
+                    setTimeout(() => el.classList.add('visible'), i * 100);
+                });
+            });
+
+            // Init lightbox after render
+            if (p.images && p.images.length > 0) {
+                initLightbox(p.images);
+            }
+        }
+
+        // Lightbox
+        let lightboxImages = [];
+        let lightboxIndex = 0;
+
+        function initLightbox(images) {
+            lightboxImages = images;
+            document.querySelectorAll('.gallery-grid-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    lightboxIndex = parseInt(item.dataset.index);
+                    showLightbox();
+                });
+            });
+        }
+
+        function showLightbox() {
+            document.getElementById('lightboxImg').src = lightboxImages[lightboxIndex].url;
+            document.getElementById('lightboxCounter').textContent = (lightboxIndex + 1) + ' / ' + lightboxImages.length;
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('lightbox')) closeLightbox();
+        });
+        document.getElementById('lightboxPrev').addEventListener('click', () => {
+            lightboxIndex = (lightboxIndex - 1 + lightboxImages.length) % lightboxImages.length;
+            document.getElementById('lightboxImg').src = lightboxImages[lightboxIndex].url;
+            document.getElementById('lightboxCounter').textContent = (lightboxIndex + 1) + ' / ' + lightboxImages.length;
+        });
+        document.getElementById('lightboxNext').addEventListener('click', () => {
+            lightboxIndex = (lightboxIndex + 1) % lightboxImages.length;
+            document.getElementById('lightboxImg').src = lightboxImages[lightboxIndex].url;
+            document.getElementById('lightboxCounter').textContent = (lightboxIndex + 1) + ' / ' + lightboxImages.length;
+        });
+        document.addEventListener('keydown', (e) => {
+            if (!document.getElementById('lightbox').classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') document.getElementById('lightboxPrev').click();
+            if (e.key === 'ArrowRight') document.getElementById('lightboxNext').click();
+        });
+
+        loadProject();
+    })();
+    </script>
+</body>
+</html>
