@@ -5,6 +5,8 @@ const { upload, uploadToCloudinary, deleteFromCloudinary } = require('../config/
 const Project = require('../models/Project');
 const Folder = require('../models/Folder');
 const SiteSettings = require('../models/SiteSettings');
+const Contact = require('../models/Contact');
+const Admin = require('../models/Admin');
 
 // All admin routes require authentication
 router.use(requireAuth);
@@ -341,6 +343,120 @@ router.put('/settings/about-image', upload.single('image'), async (req, res) => 
         res.json(settings);
     } catch (err) {
         console.error('Error uploading about image:', err);
+        res.status(500).json({ message: 'Server error.' });
+    }
+});
+
+// =====================
+// CONTACT MESSAGES
+// =====================
+
+// GET /api/admin/messages — list all contact messages
+router.get('/messages', async (req, res) => {
+    try {
+        const messages = await Contact.find().sort({ createdAt: -1 });
+        res.json(messages);
+    } catch (err) {
+        console.error('Error fetching messages:', err);
+        res.status(500).json({ message: 'Server error.' });
+    }
+});
+
+// PUT /api/admin/messages/:id/read — mark message as read
+router.put('/messages/:id/read', async (req, res) => {
+    try {
+        const msg = await Contact.findById(req.params.id);
+        if (!msg) return res.status(404).json({ message: 'Message not found.' });
+        msg.read = true;
+        await msg.save();
+        res.json(msg);
+    } catch (err) {
+        console.error('Error updating message:', err);
+        res.status(500).json({ message: 'Server error.' });
+    }
+});
+
+// DELETE /api/admin/messages/:id — delete a message
+router.delete('/messages/:id', async (req, res) => {
+    try {
+        const msg = await Contact.findById(req.params.id);
+        if (!msg) return res.status(404).json({ message: 'Message not found.' });
+        await Contact.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Message deleted.' });
+    } catch (err) {
+        console.error('Error deleting message:', err);
+        res.status(500).json({ message: 'Server error.' });
+    }
+});
+
+// =====================
+// CHANGE PASSWORD
+// =====================
+
+// PUT /api/admin/change-password
+router.put('/change-password', async (req, res) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({ message: 'Current and new password are required.' });
+        }
+        if (newPassword.length < 6) {
+            return res.status(400).json({ message: 'New password must be at least 6 characters.' });
+        }
+
+        const admin = await Admin.findOne();
+        if (!admin) return res.status(404).json({ message: 'Admin not found.' });
+
+        const isMatch = await admin.comparePassword(currentPassword);
+        if (!isMatch) return res.status(401).json({ message: 'Current password is incorrect.' });
+
+        admin.password = newPassword;
+        await admin.save();
+        res.json({ message: 'Password updated successfully.' });
+    } catch (err) {
+        console.error('Error changing password:', err);
+        res.status(500).json({ message: 'Server error.' });
+    }
+});
+
+// =====================
+// NOTIFICATION EMAIL
+// =====================
+
+// GET /api/admin/notification-email
+router.get('/notification-email', async (req, res) => {
+    try {
+        const settings = await SiteSettings.get();
+        res.json({
+            email: settings.smtpUser || process.env.SMTP_USER || '',
+            hasPassword: !!(settings.smtpPass || process.env.SMTP_PASS)
+        });
+    } catch (err) {
+        console.error('Error fetching notification email:', err);
+        res.status(500).json({ message: 'Server error.' });
+    }
+});
+
+// PUT /api/admin/notification-email
+router.put('/notification-email', async (req, res) => {
+    try {
+        const { email, smtpPass } = req.body;
+        if (!email) return res.status(400).json({ message: 'Email is required.' });
+        if (!smtpPass) return res.status(400).json({ message: 'Google App Password is required.' });
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ message: 'Please provide a valid email address.' });
+        }
+
+        const settings = await SiteSettings.get();
+        settings.smtpUser = email.substring(0, 200);
+        settings.smtpPass = smtpPass.replace(/\s/g, '').substring(0, 200);
+        settings.notificationEmail = email.substring(0, 200);
+        await settings.save();
+        res.json({ message: 'Contact email updated.', email: settings.smtpUser });
+    } catch (err) {
+        console.error('Error updating notification email:', err);
         res.status(500).json({ message: 'Server error.' });
     }
 });

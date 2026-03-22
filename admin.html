@@ -134,6 +134,18 @@
         .settings-image-row .current-img { width: 200px; height: 150px; object-fit: cover; border-radius: 12px; border: 1px solid var(--almond); }
         .settings-image-row .placeholder-box { width: 200px; height: 150px; background: var(--almond); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--text-light); font-size: 0.8rem; }
 
+        /* Messages */
+        .msg-badge { display: inline-flex; align-items: center; justify-content: center; background: var(--antique-ruby); color: white; font-size: 0.65rem; font-weight: 600; min-width: 18px; height: 18px; border-radius: 50%; margin-left: 6px; padding: 0 5px; }
+        .msg-card { background: white; border: 1px solid #f7ece6; border-radius: 10px; padding: 20px; margin-bottom: 14px; transition: border-color 0.3s; }
+        .msg-card.unread { border-left: 4px solid var(--antique-ruby); background: #fffaf7; }
+        .msg-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .msg-sender { font-weight: 600; font-size: 0.92rem; color: var(--text-dark); }
+        .msg-email { font-size: 0.8rem; color: var(--deep-puce); }
+        .msg-service { display: inline-block; font-size: 0.72rem; background: var(--champagne); color: var(--text-medium); padding: 2px 10px; border-radius: 10px; margin-top: 4px; }
+        .msg-date { font-size: 0.75rem; color: var(--text-light); white-space: nowrap; }
+        .msg-body { font-size: 0.85rem; color: var(--text-medium); line-height: 1.6; margin-bottom: 12px; white-space: pre-wrap; word-break: break-word; }
+        .msg-actions { display: flex; gap: 8px; align-items: center; }
+
         @media (max-width: 768px) {
             .admin-nav { padding: 0 8px; height: 56px; }
             .admin-main { padding: 0 4px; margin: 12px auto; }
@@ -190,7 +202,8 @@
         <div class="admin-tabs">
             <button class="admin-tab active" data-tab="projects">Projects</button>
             <button class="admin-tab" data-tab="folders">Folders</button>
-            <button class="admin-tab" data-tab="settings">Site Images</button>
+            <button class="admin-tab" data-tab="messages">Messages <span class="msg-badge" id="msgBadge" style="display:none;"></span></button>
+            <button class="admin-tab" data-tab="settings">Settings</button>
         </div>
 
         <div id="statusMsg" class="status-msg"></div>
@@ -215,6 +228,17 @@
                 </div>
                 <div id="foldersList"></div>
                 <p class="section-note">Create as many folders as you need. Use "Show on site" to control which folders appear on the website.</p>
+            </div>
+        </div>
+
+        <!-- ==================== MESSAGES TAB ==================== -->
+        <div class="tab-content" id="tab-messages">
+            <div class="card">
+                <div class="section-head">
+                    <h2>Contact Messages</h2>
+                    <span id="msgCount" style="font-size:0.82rem;color:var(--text-light);"></span>
+                </div>
+                <div id="messagesList"></div>
             </div>
         </div>
 
@@ -255,6 +279,43 @@
                         <button class="btn-primary btn-sm" style="margin-top:10px;" id="btnUploadAbout">Upload About Image</button>
                     </div>
                 </div>
+            </div>
+            <!-- Change Password -->
+            <div class="card">
+                <h2>Change Password</h2>
+                <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:16px;">Update your admin login password.</p>
+                <form id="changePasswordForm" style="max-width:400px;">
+                    <div class="form-group">
+                        <label for="currentPassword">Current Password</label>
+                        <input type="password" id="currentPassword" required autocomplete="current-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" required minlength="6" autocomplete="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm New Password</label>
+                        <input type="password" id="confirmPassword" required minlength="6" autocomplete="new-password">
+                    </div>
+                    <button type="submit" class="btn-primary btn-sm" id="btnChangePassword">Update Password</button>
+                </form>
+            </div>
+            <!-- Notification Email -->
+            <div class="card">
+                <h2>Notification Email</h2>
+                <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:16px;">The Gmail account used to send and receive contact form submissions.</p>
+                <form id="notifEmailForm" style="max-width:400px;">
+                    <div class="form-group">
+                        <label for="notifEmail">Gmail Address</label>
+                        <input type="email" id="notifEmail" required placeholder="your-email@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="smtpPass">Google App Password</label>
+                        <input type="password" id="smtpPass" required placeholder="Enter app password">
+                        <p style="font-size:0.75rem;color:var(--text-light);margin-top:4px;">2-Step Verification must be enabled on the Google account. Generate a password at <a href="https://myaccount.google.com/apppasswords" target="_blank" rel="noopener">Google App Passwords</a></p>
+                    </div>
+                    <button type="submit" class="btn-primary btn-sm" id="btnSaveNotifEmail">Save Email</button>
+                </form>
             </div>
         </div>
     </main>
@@ -954,10 +1015,166 @@
             } catch (err) { showStatus(err.message, 'error'); }
         });
 
+        // ---- Messages ----
+        let allMessages = [];
+
+        async function loadMessages() {
+            try {
+                const res = await fetch('/api/admin/messages');
+                if (!res.ok) throw new Error('Failed to load messages');
+                allMessages = await res.json();
+                renderMessages();
+                updateMsgBadge();
+            } catch (err) {
+                document.getElementById('messagesList').innerHTML = '<p style="color:#dc3545;">Failed to load messages.</p>';
+            }
+        }
+
+        function updateMsgBadge() {
+            const unread = allMessages.filter(m => !m.read).length;
+            const badge = document.getElementById('msgBadge');
+            if (unread > 0) {
+                badge.textContent = unread;
+                badge.style.display = 'inline-flex';
+            } else {
+                badge.style.display = 'none';
+            }
+            const countEl = document.getElementById('msgCount');
+            countEl.textContent = allMessages.length + ' message' + (allMessages.length !== 1 ? 's' : '') + (unread > 0 ? ' (' + unread + ' unread)' : '');
+        }
+
+        function renderMessages() {
+            const container = document.getElementById('messagesList');
+            if (allMessages.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>No messages yet.</p><p>When visitors submit the contact form, their messages will appear here.</p></div>';
+                return;
+            }
+            container.innerHTML = allMessages.map(m => {
+                const date = new Date(m.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+                const serviceHtml = m.service ? '<span class="msg-service">' + escapeHtml(m.service) + '</span>' : '';
+                return '<div class="msg-card' + (m.read ? '' : ' unread') + '" data-id="' + m._id + '">' +
+                    '<div class="msg-card-header">' +
+                        '<div>' +
+                            '<div class="msg-sender">' + escapeHtml(m.name) + '</div>' +
+                            '<div class="msg-email">' + escapeHtml(m.email) + '</div>' +
+                            serviceHtml +
+                        '</div>' +
+                        '<div class="msg-date">' + date + '</div>' +
+                    '</div>' +
+                    '<div class="msg-body">' + escapeHtml(m.message) + '</div>' +
+                    '<div class="msg-actions">' +
+                        (!m.read ? '<button class="btn-secondary btn-sm" data-msgaction="read" data-id="' + m._id + '">Mark Read</button>' : '<span style="font-size:0.75rem;color:var(--text-light);">✓ Read</span>') +
+                        '<button class="btn-danger btn-sm" data-msgaction="delete" data-id="' + m._id + '">Delete</button>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        document.getElementById('messagesList').addEventListener('click', async (e) => {
+            const btn = e.target.closest('[data-msgaction]');
+            if (!btn) return;
+            const action = btn.dataset.msgaction;
+            const id = btn.dataset.id;
+            if (action === 'read') {
+                try {
+                    const res = await fetch('/api/admin/messages/' + id + '/read', { method: 'PUT' });
+                    if (!res.ok) throw new Error('Failed to mark as read');
+                    showStatus('Message marked as read.', 'success');
+                    loadMessages();
+                } catch (err) { showStatus(err.message, 'error'); }
+            } else if (action === 'delete') {
+                const confirmed = await window.showConfirm('Delete this message permanently?');
+                if (!confirmed) return;
+                try {
+                    const res = await fetch('/api/admin/messages/' + id, { method: 'DELETE' });
+                    if (!res.ok) throw new Error('Failed to delete message');
+                    showStatus('Message deleted.', 'success');
+                    loadMessages();
+                } catch (err) { showStatus(err.message, 'error'); }
+            }
+        });
+
+        // ---- Change Password ----
+        document.getElementById('changePasswordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                showStatus('New passwords do not match.', 'error');
+                return;
+            }
+            if (newPassword.length < 6) {
+                showStatus('Password must be at least 6 characters.', 'error');
+                return;
+            }
+
+            const btn = document.getElementById('btnChangePassword');
+            btn.disabled = true; btn.textContent = 'Updating...';
+
+            try {
+                const res = await fetch('/api/admin/change-password', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ currentPassword, newPassword })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Failed to change password.');
+                showStatus('Password updated successfully!', 'success');
+                document.getElementById('changePasswordForm').reset();
+            } catch (err) {
+                showStatus(err.message, 'error');
+            } finally {
+                btn.disabled = false; btn.textContent = 'Update Password';
+            }
+        });
+
+        // ---- Notification Email ----
+        async function loadNotifEmail() {
+            try {
+                const res = await fetch('/api/admin/notification-email');
+                const data = await res.json();
+                document.getElementById('notifEmail').value = data.email || '';
+                // Password is never returned for security
+                document.getElementById('smtpPass').value = '';
+                document.getElementById('smtpPass').placeholder = data.hasPassword ? '••••••••••••••••' : 'Enter app password';
+            } catch {}
+        }
+
+        document.getElementById('notifEmailForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('notifEmail').value.trim();
+            const smtpPass = document.getElementById('smtpPass').value.trim();
+            if (!email) { showStatus('Email is required.', 'error'); return; }
+            if (!smtpPass) { showStatus('Google App Password is required.', 'error'); return; }
+
+            const btn = document.getElementById('btnSaveNotifEmail');
+            btn.disabled = true; btn.textContent = 'Saving...';
+
+            try {
+                const res = await fetch('/api/admin/notification-email', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, smtpPass })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.message || 'Failed to save email.');
+                showStatus('Contact email updated!', 'success');
+                loadNotifEmail();
+            } catch (err) {
+                showStatus(err.message, 'error');
+            } finally {
+                btn.disabled = false; btn.textContent = 'Save Email';
+            }
+        });
+
         // ---- Init ----
         loadFolders();
         loadProjects();
         loadSettings();
+        loadMessages();
+        loadNotifEmail();
     })();
     </script>
 </body>

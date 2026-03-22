@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 const projectRoutes = require('./routes/projects');
+const contactRoutes = require('./routes/contact');
+const sitemapRoutes = require('./routes/sitemap');
 const { requireAuth } = require('./middleware/auth');
 
 const app = express();
@@ -41,6 +43,15 @@ mongoose.connect(process.env.MONGO_URI)
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/projects', projectRoutes);
+app.use('/api/contact', contactRoutes);
+app.use('/sitemap.xml', sitemapRoutes);
+
+// --- robots.txt ---
+app.get('/robots.txt', (req, res) => {
+    res.type('text/plain').send(
+        `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /login\nDisallow: /api/\nSitemap: ${req.protocol}://${req.get('host')}/sitemap.xml`
+    );
+});
 
 // --- Page Routes ---
 
@@ -69,6 +80,11 @@ app.use(express.static(path.join(__dirname), {
     index: 'index.html',
     extensions: ['html']
 }));
+
+// --- 404 handler (must be after all routes) ---
+app.use((req, res) => {
+    res.status(404).sendFile(path.join(__dirname, '404.html'));
+});
 
 // --- Port fallback logic ---
 const BASE_PORT = parseInt(process.env.PORT, 10) || 5000;

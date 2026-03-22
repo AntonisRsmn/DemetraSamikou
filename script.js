@@ -56,14 +56,14 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.heroImage && data.heroImage.url) {
                 const heroWrap = document.getElementById('heroImageWrap');
                 if (heroWrap) {
-                    heroWrap.innerHTML = '<img src="' + data.heroImage.url + '" alt="Demetra Samikou" style="width:100%;height:100%;object-fit:cover;border-radius:20px;">';
+                    heroWrap.innerHTML = '<img src="' + data.heroImage.url + '" alt="Demetra Samikou" style="width:100%;height:100%;object-fit:cover;border-radius:20px;" loading="eager">';
                 }
             }
 
             if (data.aboutImage && data.aboutImage.url) {
                 const aboutWrap = document.getElementById('aboutImageWrap');
                 if (aboutWrap) {
-                    aboutWrap.innerHTML = '<img src="' + data.aboutImage.url + '" alt="About Demetra" style="width:100%;height:100%;object-fit:cover;border-radius:16px;">';
+                    aboutWrap.innerHTML = '<img src="' + data.aboutImage.url + '" alt="About Demetra" style="width:100%;height:100%;object-fit:cover;border-radius:16px;" loading="lazy">';
                 }
             }
         } catch {}
@@ -182,27 +182,42 @@ document.addEventListener('DOMContentLoaded', () => {
     // ---- Contact Form Handler ----
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
+        contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const formData = new FormData(contactForm);
             const data = Object.fromEntries(formData.entries());
 
-            // Placeholder: log form data (backend integration later)
-            console.log('Form submitted:', data);
-
-            // Show success feedback
             const btn = contactForm.querySelector('button[type="submit"]');
             const originalText = btn.textContent;
-            btn.textContent = 'Message Sent! ✓';
-            btn.style.backgroundColor = '#4a7c59';
+            btn.textContent = 'Sending...';
             btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+
+                if (response.ok) {
+                    btn.textContent = 'Message Sent! ✓';
+                    btn.style.backgroundColor = '#4a7c59';
+                    contactForm.reset();
+                } else {
+                    btn.textContent = result.message || 'Failed to send';
+                    btn.style.backgroundColor = '#c0392b';
+                }
+            } catch (err) {
+                btn.textContent = 'Connection error';
+                btn.style.backgroundColor = '#c0392b';
+            }
 
             setTimeout(() => {
                 btn.textContent = originalText;
                 btn.style.backgroundColor = '';
                 btn.disabled = false;
-                contactForm.reset();
             }, 3000);
         });
     }

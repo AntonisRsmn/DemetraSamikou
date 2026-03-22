@@ -8,6 +8,18 @@ const siteSettingsSchema = new mongoose.Schema({
     aboutImage: {
         url: { type: String, default: '' },
         publicId: { type: String, default: '' }
+    },
+    notificationEmail: {
+        type: String,
+        default: ''
+    },
+    smtpUser: {
+        type: String,
+        default: ''
+    },
+    smtpPass: {
+        type: String,
+        default: ''
     }
 }, { timestamps: true });
 

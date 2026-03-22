@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found — Demetra Samikou</title>
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/png" href="/Logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --champagne: #F2E5C6; --almond: #EFD4C4; --pink-pearl: #E2B3C2;
+            --deep-puce: #AC5B67; --antique-ruby: #781727; --dark-maroon: #560B18;
+            --off-white: #FDF8F4; --text-dark: #2D1A1A; --text-medium: #5C3A3A;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--off-white);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 32px;
+        }
+        .not-found {
+            max-width: 520px;
+        }
+        .not-found-code {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 8rem;
+            font-weight: 600;
+            color: var(--almond);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+        .not-found h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+        }
+        .not-found p {
+            font-size: 0.95rem;
+            color: var(--text-medium);
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+        .not-found-links {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .not-found-links a {
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .btn-home {
+            background: var(--antique-ruby);
+            color: white;
+        }
+        .btn-home:hover {
+            background: var(--dark-maroon);
+        }
+        .btn-projects {
+            border: 1px solid var(--antique-ruby);
+            color: var(--antique-ruby);
+        }
+        .btn-projects:hover {
+            background: var(--antique-ruby);
+            color: white;
+        }
+        .not-found-decor {
+            margin-top: 48px;
+            font-size: 0.8rem;
+            color: var(--almond);
+            letter-spacing: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="not-found">
+        <div class="not-found-code">404</div>
+        <h1>Page Not Found</h1>
+        <p>The page you're looking for doesn't exist or has been moved. Let's get you back on track.</p>
+        <div class="not-found-links">
+            <a href="/" class="btn-home">Back to Home</a>
+            <a href="/projects" class="btn-projects">View Projects</a>
+        </div>
+        <div class="not-found-decor">✦ ✦ ✦</div>
+    </div>
+</body>
+</html>
