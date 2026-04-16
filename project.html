@@ -379,14 +379,7 @@
                         <li><a href="/#services">Social Media</a></li>
                     </ul>
                 </div>
-                <div class="footer-newsletter">
-                    <h4>Stay Updated</h4>
-                    <p>Subscribe for design tips and project updates.</p>
-                    <form class="newsletter-form">
-                        <input type="email" placeholder="Your email" required>
-                        <button type="submit" class="btn btn-primary">→</button>
-                    </form>
-                </div>
+
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2026 Demetra Samikou. All rights reserved.</p>
@@ -422,7 +415,12 @@
         const navClose = document.getElementById('navClose');
         if (navClose) navClose.addEventListener('click', closeNav);
         navLinks.querySelectorAll('a').forEach(l => l.addEventListener('click', closeNav));
-        window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 50));
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+            if (scrollToTopBtn) scrollToTopBtn.classList.toggle('visible', window.scrollY > 400);
+        });
+        if (scrollToTopBtn) scrollToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
         // Get slug from URL
         const pathParts = window.location.pathname.split('/');
@@ -560,5 +558,10 @@
         loadProject();
     })();
     </script>
+
+    <!-- Scroll to Top -->
+    <button class="scroll-to-top" id="scrollToTop" aria-label="Scroll to top">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+    </button>
 </body>
 </html>

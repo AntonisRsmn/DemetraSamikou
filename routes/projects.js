@@ -62,7 +62,8 @@ router.get('/site/settings', async (req, res) => {
         const settings = await SiteSettings.get();
         res.json({
             heroImage: settings.heroImage,
-            aboutImage: settings.aboutImage
+            aboutImage: settings.aboutImage,
+            socialLinks: (settings.socialLinks || []).filter(l => l.enabled && l.url)
         });
     } catch (err) {
         console.error('Error fetching settings:', err);

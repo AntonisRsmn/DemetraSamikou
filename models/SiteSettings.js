@@ -20,7 +20,12 @@ const siteSettingsSchema = new mongoose.Schema({
     smtpPass: {
         type: String,
         default: ''
-    }
+    },
+    socialLinks: [{
+        platform: { type: String, required: true },
+        url: { type: String, default: '' },
+        enabled: { type: Boolean, default: true }
+    }]
 }, { timestamps: true });
 
 // Ensure only one settings document exists

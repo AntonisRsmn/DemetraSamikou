@@ -461,4 +461,49 @@ router.put('/notification-email', async (req, res) => {
     }
 });
 
+// =====================
+// SOCIAL LINKS
+// =====================
+
+// GET /api/admin/social-links
+router.get('/social-links', async (req, res) => {
+    try {
+        const settings = await SiteSettings.get();
+        res.json(settings.socialLinks || []);
+    } catch (err) {
+        console.error('Error fetching social links:', err);
+        res.status(500).json({ message: 'Server error.' });
+    }
+});
+
+// PUT /api/admin/social-links — replace all social links
+router.put('/social-links', async (req, res) => {
+    try {
+        const { links } = req.body;
+        if (!Array.isArray(links)) {
+            return res.status(400).json({ message: 'Links must be an array.' });
+        }
+
+        // Validate and sanitize
+        const urlPattern = /^https?:\/\/.+/i;
+        const sanitized = links
+            .filter(l => l && l.platform && typeof l.platform === 'string')
+            .slice(0, 20)
+            .map(l => ({
+                platform: l.platform.trim().substring(0, 50).toLowerCase(),
+                url: (l.url || '').trim().substring(0, 500),
+                enabled: l.enabled !== false
+            }))
+            .filter(l => !l.url || urlPattern.test(l.url));
+
+        const settings = await SiteSettings.get();
+        settings.socialLinks = sanitized;
+        await settings.save();
+        res.json(settings.socialLinks);
+    } catch (err) {
+        console.error('Error updating social links:', err);
+        res.status(500).json({ message: 'Server error.' });
+    }
+});
+
 module.exports = router;
